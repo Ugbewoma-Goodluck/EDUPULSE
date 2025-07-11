@@ -1,0 +1,209 @@
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 70px;
+  margin-top: 50px;
+  gap: 20px;
+  font-size: 20px;
+}
+.sentiment-stats {
+  display: flex;
+  gap: 20px;
+  padding: 30px;
+}
+.positive {
+  color: green;
+}
+.neutral {
+  color: orange;
+}
+.negative {
+  color: red;
+}
+.total {
+  font-weight: bolder;
+  font-size: 20px;
+}
+.selectors {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+  height: 40px;
+  border-radius: 50px;
+}
+.selectors input,
+.sentiment-selector,
+.feedback-clear {
+  border-radius: 10px;
+  background-color: white;
+  width: 150px;
+}
+.h1 {
+  color: black;
+  position: relative;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.header-1 {
+  text-align: center;
+}
+.pfeedback {
+  color: green;
+  font-weight: bold;
+}
+.nfeedback {
+  color: red;
+  font-weight: bold;
+}
+.nefeedback {
+  color: orange;
+  font-weight: bold;
+}
+.feedback-trend {
+  width: 100%;
+  height: 400;
+  margin-top: 20px;
+}
+.logoutbtn {
+  color: #242424;
+  width: max-content;
+}
+.feedback-table {
+  border: 1px solid #444;
+  overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 12px;
+  font-size: 90%;
+}
+
+.feedback-table th,
+.feedback-table td {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.feedback-table thead {
+  background-color: #f9f9f9 !important;
+}
+.feedback-table tr:nth-child(odd) {
+  background-color: #fbfbfb;
+}
+.sentiment {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.sentiment.positive {
+  color: green;
+}
+
+.sentiment.neutral {
+  color: orange;
+}
+
+.sentiment.negative {
+  color: red;
+}
+@media (max-width: 770px) {
+  .maindiv {
+    padding-top: 100px;
+  }
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 20px;
+  }
+  .head {
+    margin-top: 1px; /* Add this line */
+    margin-bottom: 10px; /* Reduce bottom spacing if needed */
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  .selectors {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    height: auto;
+    border-radius: 50px;
+    padding: 10px;
+  }
+
+  .selectors input,
+  .sentiment-selector,
+  .feedback-clear {
+    border-radius: 10px;
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+  }
+  .header-1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 1rem;
+    padding: 10px;
+    &:not(:last-child) {
+      border-bottom: 1px solid #ccc;
+    }
+  }
+  td:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  td:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .sentiment-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: larger;
+    margin-bottom: 20px;
+  }
+  .positive {
+    color: green;
+  }
+  .neutral {
+    color: orange;
+  }
+  .negative {
+    color: red;
+  }
+}
