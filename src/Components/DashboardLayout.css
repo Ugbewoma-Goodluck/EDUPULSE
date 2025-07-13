@@ -1,146 +1,187 @@
 /* DashboardLayout.css */
-* {
-  font-family: "Poppins", sans-serif;
-}
 :root {
-  --sidebar-width: 230px;
-  --body-bg-color: #ecf0f1;
+    --sidebar-width: 230px;
 }
 .dashboard-layout {
-  display: flex;
-  height: 100%;
-}
-
-body {
-  background-color: var(--body-bg-color);
-}
-.hamburger {
-  display: none;
-  position: absolute;
-  top: 1px;
-  right: 10px;
-  font-size: 24px;
-  cursor: pointer;
+    display: flex;
+    min-height: 100dvh;
+    width: 100%;
+    flex-direction: row;
+    position: relative;
 }
 .sidebar {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: var(--sidebar-width);
-  height: 100dvh;
-  background-color: #fff;
-  color: black !important;
-  border-right: 1px solid #ddd;
-  padding: 1.5rem 1rem;
-  z-index: 1000;
-}
-
-.sidebar a {
-  display: block;
-  color: inherit;
-  margin: 10px 0;
-  text-decoration: none;
-}
-.link {
-  color: red;
-  position: relative;
-  width: 100%;
-  border-right: none;
-  border-left: none;
-  border-bottom: 1px solid black;
-  padding: 10px;
-}
-.Dashboard-logout {
-  padding: 10px;
-  width: 200px;
-  border-radius: 10px;
-  background-color: --body-bg-color;
-}
-.Dashboard-logout:hover {
-  background-color: wheat;
-  cursor: pointer;
-}
-.logo {
-  height: 100px;
-  border-radius: 50px;
-  width: auto;
-  margin-left: var(--sidebar-width);
-  margin-bottom: 1px;
-}
-.btn-icon {
-  display: none;
-}
-.content {
-  flex: 1;
-  margin-left: var(--sidebar-width);
-  padding: 20px;
-  background: var(--body-bg-color);
-}
-
-@media (max-width: 768px) {
-  .sidebar.open {
-    display: block;
-    position: fixed;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
     top: 0;
     left: 0;
     width: var(--sidebar-width);
     height: 100vh;
-    background: #fff;
-    color: black;
-    border-right: 1px solid #ddd;
-    padding: 1.5rem 1rem;
+    background-color: var(--background);
     z-index: 1000;
-  }
-  .btn-icon {
-    display: block;
-    margin-top: 10px;
-  }
-  .navigation {
-    background-color: white;
-    height: max-content;
-    border-radius: 20px;
-    margin: 15px;
-    position: fixed;
-    width: calc(100% - 30px);
-  }
-  .hamburger-close {
-    position: absolute;
-    top: 10px;
-    height: 70px;
-    width: 50px;
-    right: 0;
-    z-index: 2000;
-  }
-  .sidebar {
-    display: none;
-  }
-
-  .content {
-    margin-left: 0;
-  }
-  .logo {
-    width: 50px;
-    height: 50px;
+    border-right: 1px solid var(--border);
+    padding: 1rem;
+}
+.body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* background-color: var(--body-bg-color); */
+    border-radius: 15px;
     position: relative;
-    margin-left: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 20px;
-  }
-  .content {
-    margin-left: 0;
-  }
-  .hamburger {
-    height: 70px;
-    width: 50px;
-    margin-top: 1px;
+}
+.header {
+    position: sticky;
+    top: 0;
+    background-color: var(--background);
+    border-bottom: 1px solid var(--border);
+    height: 50px;
+    padding: 6px;
+    display: flex;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-direction: row !important;
+
+    .logo {
+        height: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 50px;
+    }
+}
+.content {
+    width: 100%;
+    /* BENTO styles */
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 3 columns of equal flexible width */
+    grid-template-areas:
+        'title        title'
+        'overview  overview'
+        'f-trend    s-chart'
+        'table        table'
+        'footer      footer';
+    /* grid-template-rows: repeat(3, auto);  */
+    grid-auto-rows: auto;
+    gap: 15px; 
+    padding: 10px 20px;
+    align-items: stretch; /* stretch all children to full row height */
+}
+.bento.title-container {
+    grid-area: title;
+}
+.bento.overview {
+    grid-area: overview;
+}
+.bento.feedback-trend {
+    grid-area: f-trend;
+}
+.bento.sentiment-chart {
+    grid-area: s-chart;
+}
+.bento.feedback-table {
+    grid-area: table;
+}
+.bento.footer {
+    grid-area: footer;
+}
+.hamburger {
+    display: none;
+    position: absolute;
+    top: 1px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+}
+.title-container .title {
+    font-family: 'Raleway', 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+.sidebar a {
     display: block;
-  }
-  .h1 {
-    color: black;
-    font-size: 20px;
-    margin-top: 35px;
-    margin-left: 1px;
-  }
+    color: inherit;
+    margin: 10px 0;
+    text-decoration: none;
+}
+.link {
+    color: red;
+    position: relative;
+    width: 100%;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid black;
+    padding: 10px;
+}
+.Dashboard-logout {
+    padding: 10px;
+    width: 200px;
+    border-radius: 10px;
+}
+.Dashboard-logout:hover {
+    background-color: wheat;
+    cursor: pointer;
+}
+.btn-icon {
+    display: none;
+}
+.content {
+    flex: 1;
+    padding: 20px;
+    background: var(--body-bg-color);
+}
+
+@media (max-width: 768px) {
+    .sidebar.open {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: var(--sidebar-width);
+        height: 100vh;
+        background: #fff;
+        color: black;
+        border-right: 1px solid #ddd;
+        padding: 1.5rem 1rem;
+        z-index: 1000;
+    }
+    .btn-icon {
+        display: block;
+        margin-top: 10px;
+    }
+    .navigation {
+        background-color: white;
+        height: max-content;
+        border-radius: 20px;
+        margin: 15px;
+        position: fixed;
+        width: calc(100% - 30px);
+    }
+    .hamburger-close {
+        position: absolute;
+        top: 10px;
+        height: 70px;
+        width: 50px;
+        right: 0;
+        z-index: 2000;
+    }
+    .hamburger {
+        height: 70px;
+        width: 50px;
+        margin-top: 1px;
+        display: block;
+    }
+    .h1 {
+        color: black;
+        font-size: 20px;
+        margin-top: 35px;
+        margin-left: 1px;
+    }
 }
