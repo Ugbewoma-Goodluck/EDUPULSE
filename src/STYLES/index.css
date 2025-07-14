@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
 @custom-variant dark (&: is(.dark *));
 
 /* Poppins Regular 400 */
@@ -178,12 +179,16 @@
 
 @layer base {
     * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Poppins';
         @apply border-border outline-ring/50;
     }
     body {
-        @apply text-foreground bg-background;
+        @apply bg-background text-foreground;
     }
 }
+
 @layer components {
     .content-box {
         @apply flex bg-card border-1 rounded-xl p-3 md:p-6 text-card-foreground;

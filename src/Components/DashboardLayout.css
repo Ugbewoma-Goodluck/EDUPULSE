@@ -11,16 +11,10 @@
 }
 .sidebar {
     display: flex;
-    flex-direction: column;
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: var(--sidebar-width);
-    height: 100vh;
-    background-color: var(--background);
+    align-items: center;
+    justify-content: center;
     z-index: 1000;
     border-right: 1px solid var(--border);
-    padding: 1rem;
 }
 .body {
     flex: 1;
@@ -105,12 +99,6 @@
     font-weight: 700;
 }
 
-.sidebar a {
-    display: block;
-    color: inherit;
-    margin: 10px 0;
-    text-decoration: none;
-}
 .link {
     color: red;
     position: relative;
@@ -139,19 +127,6 @@
 }
 
 @media (max-width: 768px) {
-    .sidebar.open {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: var(--sidebar-width);
-        height: 100vh;
-        background: #fff;
-        color: black;
-        border-right: 1px solid #ddd;
-        padding: 1.5rem 1rem;
-        z-index: 1000;
-    }
     .btn-icon {
         display: block;
         margin-top: 10px;

@@ -3,11 +3,10 @@ import { useEffect } from 'react';
 import { db } from '../firebase';
 import { useState } from 'react';
 import SentimentChart from './SentimentChart';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { collection, getDocs, query, orderBy, deleteDoc, doc } from 'firebase/firestore';
 import './Admin.css';
 import Feedback from './Feedback';
-import { Link } from 'react-router-dom';
 import FeedbackTrend from './FeedbackTrend';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -15,9 +14,22 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { ChartPieInteractive } from '@/components/ChartPieInteractive';
 import { ChartLineLinear } from '@/components/ChartLineLinear';
 
+import { ChevronRightIcon, ChevronLeftIcon, MoreHorizontal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
 const Admin = ({ feedback, setfeedback }) => {
     const [loading, setloading] = useState(true);
+    const [dataRange, setDataRange] = useState({ start: 0, end: 5 });
     const navigate = useNavigate();
+    const step = 5;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -151,10 +163,11 @@ const Admin = ({ feedback, setfeedback }) => {
                                     <th>Feedback</th>
                                     <th>Sentiment</th>
                                     <th>Date</th>
+                                    <th>&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {feedback.slice(0, 5).map((k) => {
+                                {feedback.slice(dataRange.start, dataRange.end).map((k) => {
                                     return (
                                         <tr key={k.id} className="feedback-item">
                                             <td data-label="Course Code:">{k.C_code}</td>
@@ -169,14 +182,79 @@ const Admin = ({ feedback, setfeedback }) => {
                                                 {' '}
                                                 {renderSentiment(k.sentiment)}{' '}
                                             </td>
-                                            <td data-label="Date:">
+                                            <td className="" data-label="Date:">
                                                 {k.createdAt?.toDate().toLocaleDateString()}
+                                            </td>
+                                            <td>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button
+                                                            variant="ghost"
+                                                            className="p-0 size-8"
+                                                        >
+                                                            <span className="sr-only">
+                                                                Open menu
+                                                            </span>
+                                                            <MoreHorizontal />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent>
+                                                        <DropdownMenuLabel>
+                                                            Actions
+                                                        </DropdownMenuLabel>
+                                                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                                                        <DropdownMenuItem>Billing</DropdownMenuItem>
+                                                        <DropdownMenuSeparator />
+                                                        <DropdownMenuItem>Team</DropdownMenuItem>
+                                                        <DropdownMenuItem>
+                                                            Subscription
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
                                             </td>
                                         </tr>
                                     );
                                 })}
                             </tbody>
                         </table>
+                        <div className="table__foot py-2 flex gap-2 items-center">
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="size-7"
+                                onClick={() =>
+                                    setDataRange((prev) => {
+                                        const newEnd = prev.start;
+                                        const newStart = Math.max(0, prev.start - step);
+                                        return { start: newStart, end: newEnd };
+                                    })
+                                }
+                                disabled={dataRange.start === 0}
+                            >
+                                <ChevronLeftIcon />
+                            </Button>
+
+                            <span className="table__range">
+                                {dataRange.start + 1} – {Math.min(dataRange.end, feedback.length)}{' '}
+                                of {feedback.length}
+                            </span>
+
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="size-7a"
+                                onClick={() =>
+                                    setDataRange((prev) => {
+                                        const newStart = prev.end;
+                                        const newEnd = Math.min(prev.end + step, feedback.length);
+                                        return { start: newStart, end: newEnd };
+                                    })
+                                }
+                                disabled={dataRange.end >= feedback.length}
+                            >
+                                <ChevronRightIcon />
+                            </Button>
+                        </div>
                     </div>
                     <p className="bento footer">© 2025 EduPulse. All rights reserved.</p>
                 </>

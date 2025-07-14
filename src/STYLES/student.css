@@ -12,7 +12,6 @@ header {
     align-items: center;
     height: 100vh; /* full screen height */
     background-color: #f4f7fa;
-    font-family: 'Poppins', sans-serif;
     width: 100%;
 }
 .main-div.dark {

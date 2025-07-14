@@ -8,11 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from '@/components/ui/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
 export const description = 'A linear line chart';
 
@@ -41,11 +37,11 @@ const chartConfig = {
 export function ChartLineLinear() {
     return (
         <>
-            <CardHeader>
+            <CardHeader className="p-0">
                 <CardTitle>Line Chart - Linear</CardTitle>
                 <CardDescription>January - June 2024</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
                 <ChartContainer config={chartConfig}>
                     <LineChart
                         accessibilityLayer
@@ -74,7 +70,7 @@ export function ChartLineLinear() {
                     </LineChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="flex-col items-start gap-2 text-sm">
+            <CardFooter className="p-0 flex-col items-start gap-2 text-sm">
                 <div className="flex gap-2 leading-none font-medium">
                     Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
                 </div>

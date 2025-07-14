@@ -150,7 +150,7 @@
     width: 100%;
     border-collapse: collapse;
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, max-content));
+    grid-template-columns: repeat(6, minmax(0, max-content));
     gap: 0;
 }
 .table tbody,
@@ -177,7 +177,7 @@
 .table th {
     background-color: var(--secondary);
     font-weight: bold;
-    color: #666;
+    color: var(--muted-foreground);
 
     &:first-of-type {
         border-radius: 10px 0 0 10px;
@@ -189,6 +189,7 @@
 .table td {
     border: none;
     border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
 }
 .sentiment {
     font-weight: bold;
