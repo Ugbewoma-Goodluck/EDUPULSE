@@ -1,5 +1,7 @@
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { toast } from "sonner";
+
+import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,15 +10,17 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
     useSidebar,
-} from '@/components/ui/sidebar';
-export function NavUser({ user }) {
+} from "@/components/ui/sidebar";
+
+export function NavUser({ user, handleLogout, signOut }) {
     const { isMobile } = useSidebar();
+
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -39,7 +43,7 @@ export function NavUser({ user }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                         className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-                        side={isMobile ? 'bottom' : 'right'}
+                        side={isMobile ? "bottom" : "right"}
                         align="end"
                         sideOffset={4}
                     >
@@ -78,7 +82,7 @@ export function NavUser({ user }) {
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem variant="destructive" onClick={() => handleLogout()}>
                             <LogOut />
                             Log out
                         </DropdownMenuItem>

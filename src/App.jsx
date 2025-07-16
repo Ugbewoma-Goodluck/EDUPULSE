@@ -1,26 +1,26 @@
 // import './styles/index.css';
 // import './styles/component-styles.css';
-
-import Student from './components/Student.jsx';
-import Admin from './components/Admin.jsx';
-import Login from './components/Login.jsx';
-import PrivateRoute from './PrivateRoute.jsx';
-import Feedback from './components/Feedback.jsx';
-import { useState, useEffect } from 'react';
-import DashboardLayout from './components/DashboardLayout.jsx';
-import Feedbacktrend from './components/FeedbackTrend.jsx';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import SentimentChart from './components/SentimentChart.jsx';
-import { Toaster } from 'react-hot-toast';
+import NotFound404 from "@/pages/404.jsx";
+import Student from "./pages/Student";
+import Login from "./pages/Login";
+import Admin from "./components/Admin.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
+import Feedback from "./components/Feedback.jsx";
+import { useState, useEffect } from "react";
+import DashboardLayout from "./components/DashboardLayout.jsx";
+import Feedbacktrend from "./components/FeedbackTrend.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SentimentChart from "./components/SentimentChart.jsx";
+import { Toaster } from "@/components/ui/sonner";
 
 const App = () => {
     const [feedback, setfeedback] = useState([]);
     return (
         <BrowserRouter>
-            <Toaster position="center" />
+            <Toaster richColors position="top-center" />
             <Routes>
                 <Route
-                    path="/Dashboard"
+                    path="/dashboard"
                     element={
                         <PrivateRoute>
                             <DashboardLayout />
@@ -35,7 +35,7 @@ const App = () => {
                         index
                         element={
                             <PrivateRoute>
-                                {' '}
+                                {" "}
                                 <Admin feedback={feedback} setfeedback={setfeedback} />
                             </PrivateRoute>
                         }
@@ -44,7 +44,7 @@ const App = () => {
                         path="admin"
                         element={
                             <PrivateRoute>
-                                {' '}
+                                {" "}
                                 <Admin feedback={feedback} setfeedback={setfeedback} />
                             </PrivateRoute>
                         }
@@ -71,6 +71,7 @@ const App = () => {
                     }
                 />
                 <Route path="/login" element={<Login />} />
+                <Route path="*" element={<NotFound404 />} />
             </Routes>
         </BrowserRouter>
     );

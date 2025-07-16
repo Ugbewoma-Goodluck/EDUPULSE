@@ -1,16 +1,16 @@
 // src/components/DashboardLayout.jsx
-import { useState } from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
-import Admin from './Admin';
-import './Admin.css';
-import './DashboardLayout.css';
-import logo from '../assets/ChatGPT Image Jul 10, 2025, 05_16_19 AM.png';
-import { Icon } from '@iconify/react';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
-import { toast } from 'react-hot-toast';
+import { useState } from "react";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import Admin from "./Admin";
+import "./Admin.css";
+import "./DashboardLayout.css";
+import logo from "../assets/ChatGPT Image Jul 10, 2025, 05_16_19 AM.png";
+import { Icon } from "@iconify/react";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
-import { DashboardSidebar } from '@/components/sidebar/dashboard-sidebar';
+import { toast } from "sonner";
+import { DashboardSidebar } from "@/components/sidebar/DashboardSidebar";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -18,31 +18,31 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { Separator } from '@/components/ui/separator';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { DashboardHeader } from "@/components/header/DashboardHeader";
+import DashboardFooter from "@/components/footer/DashboardFooter";
 
 const DashboardLayout = () => {
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
-    const handleMenu = () => {
-        setOpen(!open);
-    };
+
     const handleLogout = () => {
-        const confirmLogout = window.confirm('Are you sure you want to logout?');
-        if (confirmLogout) {
-            signOut(auth)
-                .then(() => {
-                    toast.success('Logged out successfully');
-                    // Optional: redirect or cleanup
-                    navigate('/login');
-                })
-                .catch((error) => {
-                    toast.error('Logout failed');
-                    console.error(error);
-                });
-        }
-        // Do nothing if user clicks cancel
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (!confirmLogout) return;
+
+        toast
+            .promise(signOut(auth), {
+                loading: "Signing you out...",
+                success: "You’ve successfully logged out.",
+                error: "Logout failed. Give it another go.",
+            })
+            .then(() => {
+                navigate("/login");
+            })
+            .catch((error) => {
+                console.error(error); // still log it for debugging
+            });
     };
 
     return (
@@ -60,9 +60,15 @@ const DashboardLayout = () => {
                             Logout
                         </button>
                     </nav> */}
-                <DashboardSidebar className="z-1000" />
+                <DashboardSidebar
+                    className="sidebar z-1000"
+                    collapsible="icon"
+                    variant="sidebar"
+                    signOut={signOut}
+                    handleLogout={handleLogout}
+                />
                 <section className="body">
-                    <header className="header">
+                    {/* <header className="header">
                         <img src={logo} alt="Logo" className="logo" />
                         <button onClick={handleMenu} className="btn-icon">
                             {open ? (
@@ -81,10 +87,12 @@ const DashboardLayout = () => {
                                 />
                             )}
                         </button>
-                    </header>
+                    </header> */}
+                    <DashboardHeader />
                     <main className="content">
                         <Outlet />
                     </main>
+                    <DashboardFooter />
                 </section>
             </div>
         </SidebarProvider>

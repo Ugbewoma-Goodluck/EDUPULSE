@@ -1,73 +1,50 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@custom-variant dark (&: is(.dark *));
+@import "tailwindcss";
+@import "tw-animate-css";
+@variant dark (.dark &);
 
 /* Poppins Regular 400 */
 @font-face {
-    font-family: 'Poppins';
+    font-family: "Poppins";
     font-style: normal;
     font-weight: 400;
-    src: url('../assets/fonts/poppins/Poppins-Regular.ttf') format('truetype');
+    src: url("../fonts/poppins/Poppins-Regular.ttf") format("truetype");
     font-display: swap;
 }
 
 /* Poppins SemiBold 600 */
 @font-face {
-    font-family: 'Poppins';
+    font-family: "Poppins";
     font-style: normal;
     font-weight: 600;
-    src: url('../assets/fonts/poppins/Poppins-SemiBold.ttf') format('truetype');
+    src: url("../fonts/poppins/Poppins-SemiBold.ttf") format("truetype");
     font-display: swap;
 }
 
 /* Poppins Bold 700 */
 @font-face {
-    font-family: 'Poppins';
+    font-family: "Poppins";
     font-style: normal;
     font-weight: 700;
-    src: url('../assets/fonts/poppins/Poppins-Bold.ttf') format('truetype');
+    src: url("../fonts/poppins/Poppins-Bold.ttf") format("truetype");
     font-display: swap;
 }
 
 /* (Optional) Poppins Italic 400 */
 @font-face {
-    font-family: 'Poppins';
+    font-family: "Poppins";
     font-style: italic;
     font-weight: 400;
-    src: url('../assets/fonts/poppins/Poppins-Italic.ttf') format('truetype');
+    src: url("../fonts/poppins/Poppins-Italic.ttf") format("truetype");
     font-display: swap;
 }
 
 /* Oswald Bold 700 */
 @font-face {
-    font-family: 'Oswald';
+    font-family: "Oswald";
     font-style: normal;
     font-weight: 700;
-    src: url('../assets/fonts/Oswald-Bold.ttf') format('truetype');
+    src: url("../fonts/Oswald-Bold.ttf") format("truetype");
     font-display: swap;
-}
-
-@layer components {
-    header,
-    .header {
-        @apply z-100;
-    }
-    .title {
-        font-family: 'Raleway';
-        color: var(--color-muted-foreground);
-    }
-    .title-1 {
-        font-size: 2rem;
-    }
-    .title-2 {
-        font-size: 1.7rem;
-    }
-    .title-3 {
-        font-size: 1.25rem;
-    }
-    .title-4 {
-        font-size: 0.9rem;
-    }
 }
 
 @theme inline {
@@ -106,6 +83,13 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+    --header-height: 50px;
+    --color-info: blue;
+    --color-positive: green;
+    --color-neutral: orange;
+    --color-negative: red;
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
 }
 
 :root {
@@ -141,6 +125,12 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    --warning: oklch(0.84 0.16 84);
+    --warning-foreground: oklch(0.28 0.07 46);
+    --info: blue;
+    --positive: green;
+    --neutral: orange;
+    --negative: red;
 }
 
 .dark {
@@ -175,13 +165,15 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+    --warning: oklch(0.41 0.11 46);
+    --warning-foreground: oklch(0.99 0.02 95);
 }
 
 @layer base {
     * {
         padding: 0;
         margin: 0;
-        font-family: 'Poppins';
+        font-family: "Poppins";
         @apply border-border outline-ring/50;
     }
     body {
@@ -190,7 +182,65 @@
 }
 
 @layer components {
+    .box {
+        position: relative;
+    }
+    .box:has(.custom-skeleton.box) {
+        overflow: hidden;
+    }
+    .content-box.still-loading *:not(.custom-skeleton) {
+        opacity: 0;
+    }
+    .custom-skeleton.box {
+        position: absolute !important;
+        height: 100% !important;
+        width: 100% !important;
+        z-index: 1000;
+    }
+    .info {
+        color: blue;
+    }
+    .positive {
+        color: green;
+    }
+    .neutral {
+        color: orange;
+    }
+    .negative {
+        color: red;
+    }
     .content-box {
-        @apply flex bg-card border-1 rounded-xl p-3 md:p-6 text-card-foreground;
+        @apply bg-card text-card-foreground relative flex rounded-xl border-1 p-3 md:p-6;
+    }
+    .loading-icon {
+        animation: rotate360 .9s linear infinite;
+    }
+    /* header,
+    .header {
+        @apply z-100;
+    } */
+    .title {
+        font-family: "Raleway";
+        color: var(--color-foreground);
+    }
+    .title-1 {
+        font-size: 2rem;
+    }
+    .title-2 {
+        font-size: 1.7rem;
+    }
+    .title-3 {
+        font-size: 1.25rem;
+    }
+    .title-4 {
+        font-size: 0.9rem;
+    }
+}
+
+
+
+@keyframes rotate360 {
+    to {
+        transform: rotate(360deg);
     }
 }

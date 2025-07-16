@@ -1,0 +1,75 @@
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    width: 100%;
+}
+.input-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: min(400px, 90%);
+    margin: 0 auto;
+}
+.input-wrap label {
+    color: var(--color-muted-foreground);
+    font-size: 14px;
+}
+
+.message-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    width: min(400px, 90%);
+    padding: 10px;
+    margin: 15px auto;
+    font-size: 15px;
+}
+
+.message-positive {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.message-negative {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.message-neutral {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.submit-btn {
+    transition: 0.15s;
+    border-bottom-width: 5px !important;
+    background-color: #007bff !important ;
+    border-color: #0359b6 !important;
+    color: white;
+    cursor: pointer;
+    &:hover {
+        background-color: #0056b3 !important;
+        border-color: #064991 !important;
+    }
+    &:active {
+        border-bottom-width: 2px !important;
+    }
+}
+
+@media (min-width: 768px) {
+    header h1 {
+        font-size: 3rem;
+    }
+    .main-div {
+        padding: 20px;
+    }
+
+    .sun-icon,
+    .moon-icon {
+        top: 20px;
+        right: 20px;
+    }
+}

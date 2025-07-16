@@ -129,7 +129,7 @@ export function ChartPieInteractive({
                     </SelectContent>
                 </Select>
             </CardHeader>
-            <CardContent className="flex flex-1 justify-center pb-0">
+            <CardContent className="flex flex-1 justify-center p-0">
                 <ChartContainer
                     id={id}
                     config={chartConfig}

@@ -6,23 +6,18 @@
     display: flex;
     min-height: 100dvh;
     width: 100%;
+    max-width: 100%;
     flex-direction: row;
     position: relative;
-}
-.sidebar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    border-right: 1px solid var(--border);
 }
 .body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    /* background-color: var(--body-bg-color); */
     border-radius: 15px;
     position: relative;
+    width: 100%;
+    max-width: 100%;
 }
 .header {
     position: sticky;
@@ -45,6 +40,7 @@
 }
 .content {
     width: 100%;
+    max-width: 100%;
     /* BENTO styles */
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr)); /* 3 columns of equal flexible width */
@@ -52,13 +48,17 @@
         'title        title'
         'overview  overview'
         'f-trend    s-chart'
-        'table        table'
-        'footer      footer';
+        'table        table';
     /* grid-template-rows: repeat(3, auto);  */
     grid-auto-rows: auto;
-    gap: 15px; 
+    gap: 15px;
     padding: 10px 20px;
     align-items: stretch; /* stretch all children to full row height */
+    position: relative;
+}
+.bento {
+    max-width: 100%;
+    width: 100%;
 }
 .bento.title-container {
     grid-area: title;
@@ -75,9 +75,6 @@
 .bento.feedback-table {
     grid-area: table;
 }
-.bento.footer {
-    grid-area: footer;
-}
 .hamburger {
     display: none;
     position: absolute;
@@ -85,6 +82,10 @@
     right: 10px;
     font-size: 24px;
     cursor: pointer;
+}
+
+.sidebar, .sidebar * {
+    z-index: 1000;
 }
 
 .title-container {
@@ -95,7 +96,6 @@
     padding: 10px 0;
 }
 .title-container .title {
-    font-family: 'Raleway', 'Poppins', sans-serif;
     font-weight: 700;
 }
 
@@ -120,13 +120,18 @@
 .btn-icon {
     display: none;
 }
-.content {
-    flex: 1;
-    padding: 20px;
-    background: var(--body-bg-color);
-}
+
 
 @media (max-width: 768px) {
+    .content {
+        grid-template-columns: 1fr; /* 1 column */
+        grid-template-areas:
+            'title'
+            'overview'
+            'f-trend'
+            's-chart'
+            'table';
+    }
     .btn-icon {
         display: block;
         margin-top: 10px;

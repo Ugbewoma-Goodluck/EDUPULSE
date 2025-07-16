@@ -19,12 +19,13 @@ const chartData = [
     // { month: 'April', feedbacks: 73 },
     // { month: 'May', feedbacks: 209 },
     // { month: 'June', feedbacks: 214 },
-    { month: 'January', feedbacks: 16 },
-    { month: 'February', feedbacks: 5 },
-    { month: 'March', feedbacks: 7 },
-    { month: 'April', feedbacks: 3 },
-    { month: 'May', feedbacks: 9 },
-    { month: 'June', feedbacks: 14 },
+    { month: 'Sunday', feedbacks: 3 },
+    { month: 'Monday', feedbacks: 7 },
+    { month: 'Tuesday', feedbacks: 2 },
+    { month: 'Wednesday', feedbacks: 3 },
+    { month: 'Thursday', feedbacks: 0 },
+    { month: 'Friday', feedbacks: 0 },
+    { month: 'Saturday', feedbacks: 0 },
 ];
 
 const chartConfig = {
@@ -39,7 +40,7 @@ export function ChartLineLinear() {
         <>
             <CardHeader className="p-0">
                 <CardTitle>Line Chart - Linear</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+                <CardDescription>Sunday - Saturday Week 21</CardDescription>
             </CardHeader>
             <CardContent className="p-0">
                 <ChartContainer config={chartConfig}>
