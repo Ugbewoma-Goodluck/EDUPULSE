@@ -2,10 +2,10 @@
 import { useEffect } from "react";
 import { db } from "../firebase";
 import { useState } from "react";
-import SentimentChart from "./SentimentChart";
 import { useNavigate, Link } from "react-router-dom";
 import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
 import "./Admin.css";
+import SentimentChart from "./SentimentChart";
 import Feedback from "./Feedback";
 import FeedbackTrend from "./FeedbackTrend";
 
@@ -76,10 +76,23 @@ const Admin = ({ feedback, setfeedback }) => {
             <div className="bento title-container pt-[0_!important]">
                 <span className="title title-2">Admin Dashboard</span>
             </div>
-            <div className="bento overview feedback-cards still-loading box">
-                <div className={`feedback-card info ${loading && "still-loading"}`}>
+            <div className="bento overview feedback-cards box">
+                <div className="feedback-card info">
                     <div className="left">
-                        <span className="value">{total}</span>
+                        <span
+                            className={`value relative min-w-[25%] text-center ${loading && "still-loading"}`}
+                        >
+                            <span>{total}</span>
+                            {loading && (
+                                <Skeleton
+                                    variant="text"
+                                    className="absolute inset-0"
+                                    width="100%"
+                                    height="100%"
+                                    animation="wave"
+                                />
+                            )}
+                        </span>
                         <span className="label">Total Feedbacks</span>
                     </div>
                     <span className="icon">
@@ -89,8 +102,22 @@ const Admin = ({ feedback, setfeedback }) => {
 
                 <div className="feedback-card positive">
                     <div className="left">
-                        <span className="value">
-                            {positive} ({sentimentPercentage.positive}%)
+                        <span className={`value ${loading && "still-loading"}`}>
+                            <span>
+                                {positive} ({sentimentPercentage.positive}%)
+                            </span>
+                            {loading && (
+                                <Skeleton
+                                    variant="text"
+                                    className="absolute inset-0"
+                                    width="100%"
+                                    height="100%"
+                                    animation="wave"
+                                    // sx={{
+                                    //     bgcolor: "green",
+                                    // }}
+                                />
+                            )}
                         </span>
                         <span className="label">Positive Feedbacks</span>
                     </div>
@@ -101,8 +128,19 @@ const Admin = ({ feedback, setfeedback }) => {
 
                 <div className="feedback-card neutral">
                     <div className="left">
-                        <span className="value">
-                            {neutral} ({sentimentPercentage.neutral}%)
+                        <span className={`value ${loading && "still-loading"}`}>
+                            <span>
+                                {neutral} ({sentimentPercentage.neutral}%)
+                            </span>
+                            {loading && (
+                                <Skeleton
+                                    variant="text"
+                                    className="absolute inset-0"
+                                    width="100%"
+                                    height="100%"
+                                    animation="wave"
+                                />
+                            )}
                         </span>
                         <span className="label">Neutral Feedbacks</span>
                     </div>
@@ -113,8 +151,19 @@ const Admin = ({ feedback, setfeedback }) => {
 
                 <div className="feedback-card negative">
                     <div className="left">
-                        <span className="value">
-                            {negative} ({sentimentPercentage.negative}%)
+                        <span className={`value ${loading && "still-loading"}`}>
+                            <span>
+                                {negative} ({sentimentPercentage.negative}%)
+                            </span>
+                            {loading && (
+                                <Skeleton
+                                    variant="text"
+                                    className="absolute inset-0"
+                                    width="100%"
+                                    height="100%"
+                                    animation="wave"
+                                />
+                            )}
                         </span>
                         <span className="label">Negative Feedbacks</span>
                     </div>
@@ -132,7 +181,6 @@ const Admin = ({ feedback, setfeedback }) => {
                     <Skeleton
                         variant="rectangular"
                         className="custom-skeleton box absolute inset-0 z-1000"
-                        style={{ position: "absolute" }}
                         animation="wave"
                     />
                 )}
@@ -152,7 +200,6 @@ const Admin = ({ feedback, setfeedback }) => {
                     <Skeleton
                         variant="rectangular"
                         className="custom-skeleton box absolute inset-0 z-1000"
-                        style={{ position: "absolute" }}
                         animation="wave"
                     />
                 )}
@@ -169,7 +216,7 @@ const Admin = ({ feedback, setfeedback }) => {
                         See all
                     </a>
                 </div>
-                <table className="table">
+                <table className={`table ${loading && "loading-cells"}`}>
                     <thead>
                         <tr>
                             <th>Course</th>
@@ -177,51 +224,45 @@ const Admin = ({ feedback, setfeedback }) => {
                             <th className="feedback">Feedback</th>
                             <th>Sentiment</th>
                             <th>Date</th>
-                            <th>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {feedback.slice(dataRange.start, dataRange.end).map((k) => {
-                            return (
-                                <tr key={k.id} className="feedback-item">
-                                    <td data-label="Course Code:">{k.C_code}</td>
-                                    <td data-label="Lecturer's name:">{k.lname}</td>
-                                    <td className="feedback" data-label="Feedback:">
-                                        "{k.feedback}"
-                                    </td>
-                                    <td
-                                        data-label="Sentiment:"
-                                        className={`sentiment ${
-                                            k.sentiment?.toLowerCase() || "unknown"
-                                        }`}
-                                    >
-                                        {" "}
-                                        {renderSentiment(k.sentiment)}{" "}
-                                    </td>
-                                    <td className="" data-label="Date:">
-                                        {k.createdAt?.toDate().toLocaleDateString()}
-                                    </td>
-                                    <td>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" className="size-8 p-0">
-                                                    <span className="sr-only">Open menu</span>
-                                                    <MoreHorizontal />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                <DropdownMenuItem>Profile</DropdownMenuItem>
-                                                <DropdownMenuItem>Billing</DropdownMenuItem>
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem>Team</DropdownMenuItem>
-                                                <DropdownMenuItem>Subscription</DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </td>
-                                </tr>
-                            );
-                        })}
+                        {loading
+                            ? Array.from({ length: 5 }).map((_, i) => (
+                                  <tr key={i}>
+                                      <td colSpan={6}>
+                                          <Skeleton
+                                              variant="rectangular"
+                                              width="100%"
+                                              height={40}
+                                              animation="wave"
+                                          />
+                                      </td>
+                                  </tr>
+                              ))
+                            : feedback.slice(dataRange.start, dataRange.end).map((k) => {
+                                  return (
+                                      <tr key={k.id} className="feedback-item">
+                                          <td data-label="Course Code:">{k.C_code}</td>
+                                          <td data-label="Lecturer's name:">{k.lname}</td>
+                                          <td className="feedback" data-label="Feedback:">
+                                              "{k.feedback}"
+                                          </td>
+                                          <td
+                                              data-label="Sentiment:"
+                                              className={`sentiment ${
+                                                  k.sentiment?.toLowerCase() || "unknown"
+                                              }`}
+                                          >
+                                              {" "}
+                                              {renderSentiment(k.sentiment)}{" "}
+                                          </td>
+                                          <td className="" data-label="Date:">
+                                              {k.createdAt?.toDate().toLocaleDateString()}
+                                          </td>
+                                      </tr>
+                                  );
+                              })}
                     </tbody>
                 </table>
                 <div className="table__foot flex items-center justify-end gap-2 py-2">

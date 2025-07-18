@@ -4,14 +4,14 @@ import {
     BookOpen,
     Bot,
     Command,
-    Eclipse,
-    Frame,
+    MessageSquare,
     GalleryVerticalEnd,
     Map,
     Palette,
     PieChart,
     Settings2,
     SquareTerminal,
+    LayoutDashboard,
 } from "lucide-react";
 
 import { NavMain } from "@/components/sidebar/nav-main";
@@ -43,23 +43,6 @@ const data = {
         email: "m@example.com",
         avatar: "/avatars/shadcn.jpg",
     },
-    teams: [
-        {
-            name: "Acme Inc",
-            logo: GalleryVerticalEnd,
-            plan: "Enterprise",
-        },
-        {
-            name: "Acme Corp.",
-            logo: AudioWaveform,
-            plan: "Startup",
-        },
-        {
-            name: "Evil Corp.",
-            logo: Command,
-            plan: "Free",
-        },
-    ],
     navMain: [
         {
             title: "Playground",
@@ -147,38 +130,11 @@ const data = {
             ],
         },
     ],
-    projects: [
-        {
-            name: "Design Engineering",
-            url: "#",
-            icon: Frame,
-        },
-        {
-            name: "Sales & Marketing",
-            url: "#",
-            icon: PieChart,
-        },
-        {
-            name: "Travel",
-            url: "#",
-            icon: Map,
-        },
-    ],
     data: [
         {
-            name: "Design Engineering",
-            url: "#",
-            icon: Frame,
-        },
-        {
-            name: "Sales & Marketing",
-            url: "#",
-            icon: PieChart,
-        },
-        {
-            name: "Travel",
-            url: "#",
-            icon: Map,
+            name: "All Feedbacks",
+            url: "/dashboard/feedback",
+            icon: MessageSquare,
         },
     ],
 };
@@ -188,12 +144,23 @@ export function DashboardSidebar({ signOut, handleLogout, ...rest }) {
 
     return (
         <Sidebar {...rest}>
-            <SidebarHeader>
-                <TeamSwitcher teams={data.teams} />
-            </SidebarHeader>
+            <SidebarHeader>{/* <TeamSwitcher teams={data.teams} /> */}</SidebarHeader>
             <SidebarContent>
-                <NavMain items={data.navMain} />
-                {/* <NavProjects projects={data.projects} /> */}
+                <SidebarGroup>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton asChild>
+                                    <a href="/dashboard">
+                                        {/* <item.icon /> */}
+                                        <LayoutDashboard filled />
+                                        <span>Dashboard</span>
+                                    </a>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
                 <NavData data={data.data} />
                 <SidebarGroup>
                     <SidebarGroupLabel>Settings</SidebarGroupLabel>

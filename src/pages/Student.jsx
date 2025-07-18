@@ -11,134 +11,115 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sun, Moon, Monitor } from "lucide-react";
+import { Sun, Moon, Monitor, Smile, Loader2 } from "lucide-react";
 
 const Student = () => {
     const { setTheme } = useTheme();
-    const [ssentiment, setsetimnet] = useState("");
-    const [arr, setArr] = useState({
-        C_code: "",
-        lname: "",
-    });
+
+    const [sentiment, setSentiment] = useState("");
+    const [arr, setArr] = useState({ C_code: "", lname: "" });
     const [sentimentMessage, setSentimentMessage] = useState("");
-    const [loading, setloading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [text, setText] = useState("");
 
-    const handlechange = (e) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setSentimentMessage("");
-        setArr((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setArr((prev) => ({ ...prev, [name]: value }));
     };
 
     const analyzeSentiment = async (text) => {
         const API_URL =
             "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment";
         const HF_TOKEN = import.meta.env.VITE_HF_TOKEN;
+        if (!HF_TOKEN) throw new Error("Missing Hugging Face token (check your .env)");
 
-        try {
-            const response = await toast.promise(
-                axios.post(
-                    API_URL,
-                    { inputs: text },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${HF_TOKEN}`,
-                            "Content-Type": "application/json",
-                        },
-                    },
-                ),
-                {
-                    loading: "Analyzing sentiment...",
-                    success: "Sentiment analyzed.",
-                    error: "Error contacting sentiment server.",
+        const { data, status } = await axios.post(
+            API_URL,
+            { inputs: text, options: { wait_for_model: true } },
+            {
+                headers: {
+                    Authorization: `Bearer ${HF_TOKEN}`,
+                    "Content-Type": "application/json",
                 },
-            );
+                timeout: 15000,
+            },
+        );
 
-            // Safeguard against API returning an error object
-            if (!Array.isArray(response?.data?.[0])) {
-                console.error("Unexpected response from sentiment API:", response.data);
-                throw new Error("Unexpected sentiment data format");
-            }
-
-            const labelMap = {
-                LABEL_0: "Negative",
-                LABEL_1: "Neutral",
-                LABEL_2: "Positive",
-            };
-
-            const top = response.data[0].reduce((a, b) => (a.score > b.score ? a : b));
-
-            return labelMap[top.label] || "Unknown";
-        } catch (err) {
-            // Axios will throw for 401, 403, 500, etc.
-            console.error("analyzeSentiment() failed:", {
-                status: err.response?.status,
-                message: err.message,
-                data: err.response?.data,
-            });
-
-            throw new Error(
-                "Sentiment analysis failed. Please check API token or try again later.",
-            );
+        if (status === 401) {
+            console.error("HF auth failed:", data);
+            throw new Error("Hugging Face rejected your token (401)");
         }
+        if (data.error) {
+            console.error("HF API error:", data.error);
+            throw new Error(data.error);
+        }
+        if (!Array.isArray(data) || !Array.isArray(data[0])) {
+            console.error("Unexpected HF response:", data);
+            throw new Error("Unexpected response format");
+        }
+
+        const labelMap = { LABEL_0: "Negative", LABEL_1: "Neutral", LABEL_2: "Positive" };
+        const top = data[0].reduce((a, b) => (a.score > b.score ? a : b));
+        return labelMap[top.label] || "Unknown";
     };
 
-    const handlesubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
+        setSentimentMessage("");
 
         if (!arr.C_code || !arr.lname || !text) {
             toast.warning("Please fill in all fields.");
             return;
         }
 
-        setloading(true);
-        setArr({ C_code: "", lname: "" });
-        setText("");
+        setLoading(true);
 
-        try {
-            const sentiment = await analyzeSentiment(text);
-            console.log("Final sentiment to be stored:", sentiment);
+        // 1️⃣ Build the promise that does HF + Firestore
+        const feedbackPromise = (async () => {
+            const result = await analyzeSentiment(text);
+            await addDoc(collection(db, "feedback"), {
+                C_code: arr.C_code,
+                lname: arr.lname,
+                feedback: text,
+                sentiment: result,
+                createdAt: Timestamp.now(),
+            });
+            return result;
+        })();
 
-            await toast.promise(
-                addDoc(collection(db, "feedback"), {
-                    C_code: arr.C_code,
-                    lname: arr.lname,
-                    feedback: text,
-                    sentiment,
-                    createdAt: Timestamp.now(),
-                }),
-                {
-                    loading: "Sending feedback...",
-                    success: "Feedback sent—thanks for sharing!",
-                    error: "Oops, couldn’t send feedback. Please retry.",
-                },
-            );
+        // 2️⃣ Attach your toast to it
+        toast.promise(feedbackPromise, {
+            loading: "Submitting feedback…",
+            success: (result) => {
+                setArr({ C_code: "", lname: "" });
+                setText("");
+                setSentiment(result);
 
-            // Optional: set sentiment-based message
-            const messages = {
-                Positive: "Thanks for sharing your honest opinion.",
-                Neutral: "Thanks for your feedback. We’ll keep improving.",
-                Negative: "Sorry to hear that. We'll work on making things better.",
-            };
+                const messages = {
+                    Positive: "Thanks for sharing your honest opinion.",
+                    Neutral: "Thanks for your feedback. We’ll keep improving.",
+                    Negative: "Sorry to hear that. We'll work on making things better.",
+                };
+                return messages[result] || "Feedback sent—thanks!";
+            },
+            error: (err) => {
+                console.error("Submission error:", err);
+                return err.message || "Submission failed. Please try again.";
+            },
+        });
 
-            setsetimnet(sentiment);
-            setSentimentMessage(messages[sentiment] || "");
-        } catch (error) {
-            console.error("Full submission error:", error);
-            setsetimnet("error");
-            setSentimentMessage("");
-        } finally {
-            setloading(false);
-        }
+        // 3️⃣ Always re-enable the button when done
+        feedbackPromise.finally(() => {
+            setLoading(false);
+        });
     };
 
     return (
@@ -161,16 +142,13 @@ const Student = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="z-100" align="end">
                             <DropdownMenuItem onClick={() => setTheme("light")}>
-                                <Sun />
-                                Light
+                                <Sun /> Light
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => setTheme("dark")}>
-                                <Moon />
-                                Dark
+                                <Moon /> Dark
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => setTheme("system")}>
-                                <Monitor />
-                                System
+                                <Monitor /> System
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -186,13 +164,13 @@ const Student = () => {
                         Tell us about your learning experience
                     </span>
                 </p>
-                <form onSubmit={handlesubmit}>
+                <form onSubmit={handleSubmit}>
                     <div className="input-wrap">
                         <label>Course Name/Code:</label>
                         <Input
                             type="text"
                             value={arr.C_code}
-                            onChange={(e) => handlechange(e)}
+                            onChange={handleChange}
                             placeholder="Enter Course name/code...."
                             name="C_code"
                         />
@@ -202,8 +180,8 @@ const Student = () => {
                         <label>Lecturer's name:</label>
                         <Input
                             type="text"
-                            onChange={(e) => handlechange(e)}
                             value={arr.lname}
+                            onChange={handleChange}
                             name="lname"
                             placeholder="Enter Lecturer name"
                         />
@@ -212,6 +190,7 @@ const Student = () => {
                     <div className="input-wrap">
                         <label>Feedback:</label>
                         <Textarea
+                            rows={4}
                             id="textarea"
                             placeholder="Type your feedback here..."
                             value={text}
@@ -220,26 +199,31 @@ const Student = () => {
                     </div>
 
                     <div className="input-wrap">
-                        <Input
-                            className="submit-btn"
-                            type="submit"
-                            value={loading ? "Submitting..." : "Submit"}
-                            disabled={loading}
-                        />
+                        <Button className="submit-btn" type="submit" disabled={loading}>
+                            {loading ? (
+                                <Loader2 className="aspect-square h-full animate-spin" />
+                            ) : (
+                                "Submit"
+                            )}
+                        </Button>
                     </div>
                 </form>
             </main>
-            {ssentiment && (
-                <div
-                    className={`message-box ${
-                        ssentiment === "Positive"
-                            ? "message-positive"
-                            : ssentiment === "Negative"
-                              ? "message-negative"
-                              : "message-neutral"
-                    }`}
-                >
-                    <p className="message">{sentimentMessage}</p>
+
+            {sentiment && (
+                <div className="input-wrap">
+                    <Alert
+                        className={`border-1 bg-${sentiment.toLocaleLowerCase()} text-${sentiment.toLocaleLowerCase()}-foreground border-bg-${sentiment.toLocaleLowerCase()}-border`}
+                    >
+                        {sentiment === "Positive" ? (
+                            <Smile />
+                        ) : sentiment === "Negative" ? (
+                            <Frown />
+                        ) : (
+                            <Meh />
+                        )}
+                        <AlertDescription>{sentimentMessage}</AlertDescription>
+                    </Alert>
                 </div>
             )}
         </>

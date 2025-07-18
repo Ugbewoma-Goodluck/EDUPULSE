@@ -11,13 +11,14 @@ import logo from "../assets/ChatGPT Image Jul 10, 2025, 05_16_19 AM.png";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sun, Moon, Monitor, Loader } from "lucide-react";
+import { Sun, Moon, Monitor, Loader2, XCircle } from "lucide-react";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -41,17 +42,22 @@ const Login = () => {
 
         setSending(true);
 
-        const loginPromise = signInWithEmailAndPassword(auth, email, password).then(
-            (userCredential) => {
+        const loginPromise = signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
                 const userEmail = userCredential.user.email;
                 if (userEmail === "edupulse360@gmail.com") {
-                    setTimeout(() => navigate("/Dashboard"), 200);
+                    setTimeout(() => navigate("/dashboard"), 200);
                 } else {
                     setLoginError("Invalid Credentials");
                     throw new Error("Invalid Credentials");
                 }
-            },
-        );
+            })
+            .catch((err) => {
+                // this catches both Firebase auth errors AND your manual throw above
+                setLoginError("Invalid Credentials");
+                // toast.error("Login failed. Check your email & password.");
+                throw err; // re‑throw so toast.promise sees a rejection
+            });
 
         toast.promise(loginPromise, {
             loading: "Validating credentials...",
@@ -137,24 +143,22 @@ const Login = () => {
                     />
                 </div>
                 <div className="input-wrap">
-                    <Button
-                        id="submitBtn"
-                        className="submit-btn"
-                        type="submit"
-                        variant="default"
-                        disabled={sending}
-                    >
+                    <Button className="submit-btn" type="submit" disabled={sending}>
                         {sending ? (
-                            <span className="loading-icon h-full">
-                                <Loader className="aspect-square h-full" />
-                            </span>
+                            <Loader2 className="aspect-square h-full animate-spin" />
                         ) : (
                             "Login"
                         )}
                     </Button>
                 </div>
-                <div className="error-message">
-                    {loginError && <p style={{ color: "red" }}>{loginError}</p>}
+                <div className="input-wrap">
+                    {loginError && (
+                        <Alert variant="destructive">
+                            <XCircle />
+                            <AlertTitle className="font-bold">Error Logging in!</AlertTitle>
+                            <AlertDescription>{loginError}</AlertDescription>
+                        </Alert>
+                    )}
                 </div>
             </form>
         </>

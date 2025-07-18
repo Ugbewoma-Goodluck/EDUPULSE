@@ -44,7 +44,6 @@ const App = () => {
                         path="admin"
                         element={
                             <PrivateRoute>
-                                {" "}
                                 <Admin feedback={feedback} setfeedback={setfeedback} />
                             </PrivateRoute>
                         }

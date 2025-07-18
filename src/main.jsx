@@ -5,9 +5,9 @@ import { ThemeProvider } from "./context/ShadcnThemeContext.jsx";
 import App from "./App";
 
 createRoot(document.getElementById("root")).render(
-	<StrictMode>
-		<ThemeProvider>
-			<App />
-		</ThemeProvider>
-	</StrictMode>
+    <StrictMode>
+        <ThemeProvider attribute="data-theme" defaultTheme="inline" enableSystem>
+            <App />
+        </ThemeProvider>
+    </StrictMode>,
 );

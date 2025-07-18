@@ -1,6 +1,6 @@
-import { Navigate } from 'react-router-dom';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from './firebase'; // ✅ FIXED path
+import { Navigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebase"; // ✅ FIXED path
 
 const PrivateRoute = ({ children }) => {
     const [user, loading] = useAuthState(auth);
