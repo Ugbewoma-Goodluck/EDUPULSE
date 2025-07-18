@@ -49,7 +49,7 @@ const Student = () => {
                     Authorization: `Bearer ${HF_TOKEN}`,
                     "Content-Type": "application/json",
                 },
-                timeout: 15000,
+                timeout: 30000,
             },
         );
 

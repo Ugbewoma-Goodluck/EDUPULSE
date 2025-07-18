@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Folder, Forward, MoreHorizontal, Trash2 } from "lucide-react";
 import {
     DropdownMenu,
@@ -24,10 +25,10 @@ export function NavData({ data }) {
                 {data.map((item) => (
                     <SidebarMenuItem key={item.name}>
                         <SidebarMenuButton asChild>
-                            <a href={item.url}>
+                            <Link to={item.url}>
                                 <item.icon />
                                 <span>{item.name}</span>
-                            </a>
+                            </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 ))}

@@ -1,14 +1,12 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import {
-    AudioWaveform,
     BookOpen,
     Bot,
-    Command,
     MessageSquare,
-    GalleryVerticalEnd,
-    Map,
     Palette,
     PieChart,
+    ChartArea,
     Settings2,
     SquareTerminal,
     LayoutDashboard,
@@ -136,6 +134,11 @@ const data = {
             url: "/dashboard/feedback",
             icon: MessageSquare,
         },
+        {
+            name: "Charts",
+            url: "/dashboard/charts",
+            icon: PieChart,
+        },
     ],
 };
 
@@ -151,11 +154,10 @@ export function DashboardSidebar({ signOut, handleLogout, ...rest }) {
                         <SidebarMenu>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild>
-                                    <a href="/dashboard">
-                                        {/* <item.icon /> */}
-                                        <LayoutDashboard filled />
+                                    <Link to="/dashboard">
+                                        <LayoutDashboard style={{ fill: "currentColor" }} />
                                         <span>Dashboard</span>
-                                    </a>
+                                    </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>

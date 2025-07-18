@@ -17,15 +17,15 @@ export function DashboardHeader() {
         <header className="bg-background flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
             <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
                 <SidebarTrigger className="-ml-1" />
-                <Separator
+                {/* <Separator
                     orientation="vertical"
                     className="mx-2 data-[orientation=vertical]:h-4"
-                />
+                /> */}
                 <span className="title-2 text-base font-medium">Admin Dashboard</span>
                 <div className="ml-auto flex items-center gap-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="icon">
+                            <Button variant="ghost" size="icon">
                                 <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
                                 <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
                                 <span className="sr-only">Toggle theme</span>
@@ -48,7 +48,7 @@ export function DashboardHeader() {
                     </DropdownMenu>
                     <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
                         <a
-                            href="https://github.com/shadcn-ui/ui/tree/main/apps/v4/app/(examples)/dashboard"
+                            href="https://github.com/Ugbewoma-Goodluck/EDUPULSE"
                             rel="noopener noreferrer"
                             target="_blank"
                             className="dark:text-foreground"
