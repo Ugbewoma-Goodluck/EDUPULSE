@@ -1,14 +1,15 @@
+import LandingPage from "@/pages/LandingPage.jsx";
 import NotFound404 from "@/pages/404.jsx";
 import Student from "@/pages/Student";
 import Login from "@/pages/Login";
 import Admin from "@/components/Admin.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import Feedback from "./components/Feedback.jsx";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DashboardLayout from "./components/DashboardLayout.jsx";
 import Feedbacktrend from "./components/FeedbackTrend.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SentimentChart from "./components/SentimentChart.jsx";
+import SentimentChart from "@/components/SentimentChart.jsx";
 import { Toaster } from "@/components/ui/sonner";
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <BrowserRouter>
             <Toaster richColors position="top-center" />
             <Routes>
+                <Route path="/" element={<LandingPage />} />
                 <Route
                     path="/dashboard"
                     element={
@@ -33,7 +35,6 @@ const App = () => {
                         index
                         element={
                             <PrivateRoute>
-                                {" "}
                                 <Admin feedback={feedback} setFeedback={setFeedback} />
                             </PrivateRoute>
                         }
@@ -48,7 +49,7 @@ const App = () => {
                     />
                 </Route>
                 <Route
-                    path="/"
+                    path="/feedback-form"
                     element={<Student feedback={feedback} setFeedback={setFeedback} />}
                 />
                 <Route

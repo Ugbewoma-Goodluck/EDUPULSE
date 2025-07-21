@@ -29,6 +29,10 @@ const Student = () => {
     const [sending, setSending] = useState(false);
     const [text, setText] = useState("");
 
+    const positiveMessage = "Thanks for sharing your honest opinion.",
+        neutralMessage = "Thanks for your feedback. We’ll keep improving.",
+        negativeMessage = "Sorry to hear that. We'll work on making things better.";
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setSentimentMessage("");
@@ -199,7 +203,11 @@ const Student = () => {
                     </div>
 
                     <div className="input-wrap">
-                        <Button className="submit-btn" type="submit" disabled={sending}>
+                        <Button
+                            className="submit-btn cursor-auto disabled:cursor-none"
+                            type="submit"
+                            disabled={sending}
+                        >
                             {sending ? (
                                 <Loader2 className="aspect-square h-full animate-spin" />
                             ) : (
@@ -215,13 +223,6 @@ const Student = () => {
                     <Alert
                         className={`border-1 bg-${sentiment.toLocaleLowerCase()} text-${sentiment.toLocaleLowerCase()}-foreground border-bg-${sentiment.toLocaleLowerCase()}-border`}
                     >
-                        {sentiment === "Positive" ? (
-                            <Smile />
-                        ) : sentiment === "Negative" ? (
-                            <Frown />
-                        ) : (
-                            <Meh />
-                        )}
                         <AlertDescription>{sentimentMessage}</AlertDescription>
                     </Alert>
                 </div>

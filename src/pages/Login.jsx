@@ -143,7 +143,11 @@ const Login = () => {
                     />
                 </div>
                 <div className="input-wrap">
-                    <Button className="submit-btn" type="submit" disabled={sending}>
+                    <Button
+                        className="submit-btn cursor-auto disabled:cursor-none"
+                        type="submit"
+                        disabled={sending}
+                    >
                         {sending ? (
                             <Loader2 className="aspect-square h-full animate-spin" />
                         ) : (
