@@ -1,9 +1,7 @@
-// import './styles/index.css';
-// import './styles/component-styles.css';
 import NotFound404 from "@/pages/404.jsx";
-import Student from "./pages/Student";
-import Login from "./pages/Login";
-import Admin from "./components/Admin.jsx";
+import Student from "@/pages/Student";
+import Login from "@/pages/Login";
+import Admin from "@/components/Admin.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import Feedback from "./components/Feedback.jsx";
 import { useState, useEffect } from "react";
@@ -14,7 +12,7 @@ import SentimentChart from "./components/SentimentChart.jsx";
 import { Toaster } from "@/components/ui/sonner";
 
 const App = () => {
-    const [feedback, setfeedback] = useState([]);
+    const [feedback, setFeedback] = useState([]);
     return (
         <BrowserRouter>
             <Toaster richColors position="top-center" />
@@ -29,14 +27,14 @@ const App = () => {
                 >
                     <Route
                         path="feedback"
-                        element={<Feedback feedback={feedback} setfeedback={setfeedback} />}
+                        element={<Feedback feedback={feedback} setFeedback={setFeedback} />}
                     />
                     <Route
                         index
                         element={
                             <PrivateRoute>
                                 {" "}
-                                <Admin feedback={feedback} setfeedback={setfeedback} />
+                                <Admin feedback={feedback} setFeedback={setFeedback} />
                             </PrivateRoute>
                         }
                     />
@@ -44,14 +42,14 @@ const App = () => {
                         path="admin"
                         element={
                             <PrivateRoute>
-                                <Admin feedback={feedback} setfeedback={setfeedback} />
+                                <Admin feedback={feedback} setFeedback={setFeedback} />
                             </PrivateRoute>
                         }
                     />
                 </Route>
                 <Route
                     path="/"
-                    element={<Student feedback={feedback} setfeedback={setfeedback} />}
+                    element={<Student feedback={feedback} setFeedback={setFeedback} />}
                 />
                 <Route
                     path="/feedbacktrend"

@@ -1,19 +1,33 @@
-import { useEffect } from "react";
-import { db } from "../firebase";
-import { useState } from "react";
-import { signOut } from "firebase/auth";
-import { motion } from "framer-motion";
-import { auth } from "../firebase";
-import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
 import "./Admin.css";
-const Feedback = ({ feedback, setfeedback }) => {
+import { useState, useEffect } from "react";
+import { db } from "../firebase";
+import { motion } from "framer-motion";
+import { useNavigate, Link } from "react-router-dom";
+import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
+
+import Skeleton from "@mui/material/Skeleton";
+import { MessageSquare, Smile, Meh, Frown, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+
+const Feedback = ({ feedback, setFeedback }) => {
+    const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState({
         course: "",
         lecturer: "",
         sentiment: "",
     });
 
-    // Fetch feedback from Firestore
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -23,15 +37,18 @@ const Feedback = ({ feedback, setfeedback }) => {
                     id: doc.id,
                     ...doc.data(),
                 }));
-                setfeedback(data);
+                setFeedback(data);
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching feedback:", error);
+                toast.warning("Error fetching feedbacks");
             }
         };
 
         fetchData();
-    }, [setfeedback]);
-    const handleclear = async () => {
+    }, [setFeedback]);
+
+    const handleClear = async () => {
         const confirmed = window.confirm("Are you sure you want to delete all feedback?");
         if (!confirmed) return;
 
@@ -41,24 +58,24 @@ const Feedback = ({ feedback, setfeedback }) => {
                 deleteDoc(doc(db, "feedback", docItem.id)),
             );
             await Promise.all(deletions);
-            setfeedback([]); // Clear local state
-            alert("All feedback has been deleted.");
+            setFeedback([]); // Clear local state
+            toast.success("All feedback has been deleted.");
         } catch (error) {
             console.error("Error deleting feedback:", error);
-            alert("Failed to delete feedback. Try again.");
+            toast.error("Failed to delete feedback. Try again.");
         }
     };
+
     const renderSentiment = (sentiment) => {
         if (!sentiment) return "Unknown";
-
         const formatted = sentiment.charAt(0).toUpperCase() + sentiment.slice(1).toLowerCase();
-
         return formatted;
     };
+
     const total = feedback.length;
-    const positive = feedback.filter((f) => f.sentiment === "positive").length;
-    const neutral = feedback.filter((f) => f.sentiment === "neutral").length;
-    const negative = feedback.filter((f) => f.sentiment === "negative").length;
+    const positive = feedback.filter((f) => f.sentiment.toLowerCase() === "positive").length;
+    const neutral = feedback.filter((f) => f.sentiment.toLowerCase() === "neutral").length;
+    const negative = feedback.filter((f) => f.sentiment.toLowerCase() === "negative").length;
     const sentimentPercentage = {
         positive: ((positive / total) * 100).toFixed(2),
         neutral: ((neutral / total) * 100).toFixed(2),
@@ -66,66 +83,173 @@ const Feedback = ({ feedback, setfeedback }) => {
     };
     return (
         <>
-            <h1 className="bento title head">Welcome to the Admin dashboard</h1>
-            <motion.div
-                className="selectors"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 3 }}
-            >
-                <input
-                    type="text"
-                    placeholder="Search by Course"
-                    value={filters.course}
-                    onChange={(e) =>
-                        setFilters({ ...filters, course: e.target.value.toLowerCase() })
-                    }
-                />
-                <input
-                    type="text"
-                    placeholder="Search by Lecturer"
-                    value={filters.lecturer}
-                    onChange={(e) =>
-                        setFilters({ ...filters, lecturer: e.target.value.toLowerCase() })
-                    }
-                />
+            <div className="bento title-container pt-[0_!important]">
+                <span className="title title-2">All Feedbacks</span>
 
-                <select
-                    className="sentiment-selector"
-                    value={filters.sentiment}
-                    onChange={(e) => setFilters({ ...filters, sentiment: e.target.value })}
+                <motion.div
+                    className="selectors"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
                 >
-                    <option value="">All Sentiments</option>
-                    <option value="positive">Positive</option>
-                    <option value="neutral">Neutral</option>
-                    <option value="negative">Negative</option>
-                </select>
-                <button onClick={handleclear} className="feedback-clear">
-                    Clear all Feedbacks
-                </button>
-            </motion.div>
-            <motion.div
-                className="sentiment-stats"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 3 }}
-            >
-                <h6 className="total">Total feedback is:{total}</h6>
-                <p className="positive">
-                    Positive:{positive}({sentimentPercentage.positive}%)
-                </p>
-                <p className="neutral">
-                    Neutral:{neutral} ({sentimentPercentage.neutral}%)
-                </p>
-                <p className="negative">
-                    Negative:{negative} ({sentimentPercentage.negative}%)
-                </p>
-            </motion.div>
-            <nav className="content-box bento table">
-                {feedback.length === 0 ? (
-                    <p>No feedback yet.</p>
-                ) : (
-                    <table className="feedback-table">
+                    <Input
+                        type="text"
+                        placeholder="Filter by Course"
+                        value={filters.course}
+                        onChange={(e) =>
+                            setFilters({ ...filters, course: e.target.value.toLowerCase() })
+                        }
+                    />
+                    <Input
+                        type="text"
+                        placeholder="Filter by Lecturer"
+                        value={filters.lecturer}
+                        onChange={(e) =>
+                            setFilters({ ...filters, lecturer: e.target.value.toLowerCase() })
+                        }
+                    />
+                    <Select
+                        className="select"
+                        value={filters.sentiment}
+                        onValueChange={(value) => setFilters({ ...filters, sentiment: value })}
+                    >
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Filter sentiments" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Sentiments</SelectLabel>
+                                <SelectItem value="all">All Sentiments</SelectItem>
+                                <SelectItem value="positive">Positive</SelectItem>
+                                <SelectItem value="neutral">Neutral</SelectItem>
+                                <SelectItem value="negative">Negative</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+
+                    <Button onClick={handleClear} variant="destructive">
+                        <Trash2 />
+                        Clear all Feedbacks
+                    </Button>
+                </motion.div>
+            </div>
+            <div className="bento overview feedback-cards box">
+                <motion.div
+                    className="contents"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 3 }}
+                >
+                    <div className="feedback-card info">
+                        <div className="left">
+                            <span
+                                className={`value relative min-w-[25%] text-center ${loading && "still-loading"}`}
+                            >
+                                <span>{total}</span>
+                                {loading && (
+                                    <Skeleton
+                                        variant="text"
+                                        className="absolute inset-0"
+                                        width="100%"
+                                        height="100%"
+                                        animation="wave"
+                                    />
+                                )}
+                            </span>
+                            <span className="label">Total Feedbacks</span>
+                        </div>
+                        <span className="icon">
+                            <MessageSquare size={40} />
+                        </span>
+                    </div>
+
+                    <div className="feedback-card positive">
+                        <div className="left">
+                            <span className={`value ${loading && "still-loading"}`}>
+                                <span>
+                                    {positive} ({sentimentPercentage.positive}%)
+                                </span>
+                                {loading && (
+                                    <Skeleton
+                                        variant="text"
+                                        className="absolute inset-0"
+                                        width="100%"
+                                        height="100%"
+                                        animation="wave"
+                                    />
+                                )}
+                            </span>
+                            <span className="label">Positive Feedbacks</span>
+                        </div>
+                        <span className="icon">
+                            <Smile size={40} />
+                        </span>
+                    </div>
+
+                    <div className="feedback-card neutral">
+                        <div className="left">
+                            <span className={`value ${loading && "still-loading"}`}>
+                                <span>
+                                    {neutral} ({sentimentPercentage.neutral}%)
+                                </span>
+                                {loading && (
+                                    <Skeleton
+                                        variant="text"
+                                        className="absolute inset-0"
+                                        width="100%"
+                                        height="100%"
+                                        animation="wave"
+                                    />
+                                )}
+                            </span>
+                            <span className="label">Neutral Feedbacks</span>
+                        </div>
+                        <span className="icon">
+                            <Meh size={40} />
+                        </span>
+                    </div>
+
+                    <div className="feedback-card negative">
+                        <div className="left">
+                            <span className={`value ${loading && "still-loading"}`}>
+                                <span>
+                                    {negative} ({sentimentPercentage.negative}%)
+                                </span>
+                                {loading && (
+                                    <Skeleton
+                                        variant="text"
+                                        className="absolute inset-0"
+                                        width="100%"
+                                        height="100%"
+                                        animation="wave"
+                                    />
+                                )}
+                            </span>
+                            <span className="label">Negative Feedbacks</span>
+                        </div>
+                        <span className="icon">
+                            <Frown size={40} />
+                        </span>
+                    </div>
+                </motion.div>
+            </div>
+            {feedback.length === 0 ? (
+                <div className="content-box bento feedback-table border-2 border-dashed">
+                    <p className="flex h-full w-full items-center justify-center p-4">
+                        No feedbacks yet.
+                    </p>
+                </div>
+            ) : (
+                <div className="content-box bento feedback-table flex-col">
+                    <div className="table__title">
+                        <span className="table__title-text flex gap-1.5">
+                            <span className="icon">
+                                <MessageSquare size={25} />
+                            </span>
+                            All Feedbacks:
+                        </span>
+                    </div>
+                    <table className={`table ${loading && "loading-cells"}`}>
                         <thead style={{ backgroundColor: "#f0f0f0" }}>
                             <tr>
                                 <th>Course</th>
@@ -142,17 +266,12 @@ const Feedback = ({ feedback, setfeedback }) => {
                                         f.C_code.toLowerCase().includes(filters.course) &&
                                         f.lname.toLowerCase().includes(filters.lecturer) &&
                                         (filters.sentiment === "" ||
+                                            filters.sentiment === "all" ||
                                             (f.sentiment &&
                                                 f.sentiment.toLowerCase() ===
                                                     filters.sentiment.toLowerCase())),
                                 )
                                 .map((f) => {
-                                    console.log("Rendering Feedback:", {
-                                        id: f.id,
-                                        sentiment: f.sentiment,
-                                        typeof: typeof f.sentiment,
-                                    });
-
                                     return (
                                         <motion.tr
                                             key={f.id}
@@ -179,8 +298,8 @@ const Feedback = ({ feedback, setfeedback }) => {
                                 })}
                         </tbody>
                     </table>
-                )}
-            </nav>
+                </div>
+            )}
         </>
     );
 };

@@ -12,10 +12,8 @@ import {
     LayoutDashboard,
 } from "lucide-react";
 
-import { NavMain } from "@/components/sidebar/nav-main";
-import { NavProjects } from "@/components/sidebar/nav-projects";
+import { NavData } from "@/components/sidebar/nav-data";
 import { NavUser } from "@/components/sidebar/nav-user";
-import { TeamSwitcher } from "@/components/sidebar/team-switcher";
 import {
     Sidebar,
     SidebarContent,
@@ -32,102 +30,14 @@ import {
 } from "@/components/ui/sidebar";
 
 import ThemeDropdown from "@/components/ThemeDropdown";
-import { NavData } from "./nav-data";
 
 // Sample data
 const data = {
     user: {
-        name: "Shadcn",
-        email: "m@example.com",
+        name: "Edupulse",
+        email: "edupulse360@gmail.com",
         avatar: "/avatars/shadcn.jpg",
     },
-    navMain: [
-        {
-            title: "Playground",
-            url: "#",
-            icon: SquareTerminal,
-            isActive: true,
-            items: [
-                {
-                    title: "History",
-                    url: "#",
-                },
-                {
-                    title: "Starred",
-                    url: "#",
-                },
-                {
-                    title: "Settings",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Models",
-            url: "#",
-            icon: Bot,
-            items: [
-                {
-                    title: "Genesis",
-                    url: "#",
-                },
-                {
-                    title: "Explorer",
-                    url: "#",
-                },
-                {
-                    title: "Quantum",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Documentation",
-            url: "#",
-            icon: BookOpen,
-            items: [
-                {
-                    title: "Introduction",
-                    url: "#",
-                },
-                {
-                    title: "Get Started",
-                    url: "#",
-                },
-                {
-                    title: "Tutorials",
-                    url: "#",
-                },
-                {
-                    title: "Changelog",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Settings",
-            url: "#",
-            icon: Settings2,
-            items: [
-                {
-                    title: "General",
-                    url: "#",
-                },
-                {
-                    title: "Team",
-                    url: "#",
-                },
-                {
-                    title: "Billing",
-                    url: "#",
-                },
-                {
-                    title: "Limits",
-                    url: "#",
-                },
-            ],
-        },
-    ],
     data: [
         {
             name: "All Feedbacks",
@@ -147,7 +57,6 @@ export function DashboardSidebar({ signOut, handleLogout, ...rest }) {
 
     return (
         <Sidebar {...rest}>
-            <SidebarHeader>{/* <TeamSwitcher teams={data.teams} /> */}</SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>
@@ -186,7 +95,7 @@ export function DashboardSidebar({ signOut, handleLogout, ...rest }) {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter>
+            <SidebarFooter className="z-1000">
                 <NavUser user={data.user} signOut={signOut} handleLogout={handleLogout} />
             </SidebarFooter>
         </Sidebar>

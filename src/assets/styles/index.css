@@ -202,7 +202,6 @@
     --warning-foreground: oklch(0.99 0.02 95);
 
     /* Dark Mode Status Colors */
-
     /* Success Colors */
     --success: oklch(0.25 0.22 135); /* darker green bg */
     --success-foreground: oklch(0.9 0.1 135); /* light text */

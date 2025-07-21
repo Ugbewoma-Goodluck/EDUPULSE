@@ -1,4 +1,6 @@
 import { useTheme } from "@/context/ShadcnThemeContext";
+import logo from "@/assets/ChatGPT Image Jul 10, 2025, 05_16_19 AM.png";
+
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -17,10 +19,11 @@ export function DashboardHeader() {
         <header className="bg-background flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
             <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
                 <SidebarTrigger className="-ml-1" />
-                {/* <Separator
+                <Separator
                     orientation="vertical"
                     className="mx-2 data-[orientation=vertical]:h-4"
-                /> */}
+                />
+                <img className="aspect-square h-full max-h-[35px] rounded-lg" src={logo} />
                 <span className="title-2 text-base font-medium">Admin Dashboard</span>
                 <div className="ml-auto flex items-center gap-2">
                     <DropdownMenu>

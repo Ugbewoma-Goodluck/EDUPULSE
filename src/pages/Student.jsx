@@ -18,7 +18,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sun, Moon, Monitor, Smile, Loader2 } from "lucide-react";
+import { Sun, Moon, Monitor, Smile, Frown, Meh, Loader2 } from "lucide-react";
 
 const Student = () => {
     const { setTheme } = useTheme();
@@ -26,7 +26,7 @@ const Student = () => {
     const [sentiment, setSentiment] = useState("");
     const [arr, setArr] = useState({ C_code: "", lname: "" });
     const [sentimentMessage, setSentimentMessage] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [sending, setSending] = useState(false);
     const [text, setText] = useState("");
 
     const handleChange = (e) => {
@@ -80,7 +80,7 @@ const Student = () => {
             return;
         }
 
-        setLoading(true);
+        setSending(true);
 
         // 1️⃣ Build the promise that does HF + Firestore
         const feedbackPromise = (async () => {
@@ -118,7 +118,7 @@ const Student = () => {
 
         // 3️⃣ Always re-enable the button when done
         feedbackPromise.finally(() => {
-            setLoading(false);
+            setSending(false);
         });
     };
 
@@ -199,8 +199,8 @@ const Student = () => {
                     </div>
 
                     <div className="input-wrap">
-                        <Button className="submit-btn" type="submit" disabled={loading}>
-                            {loading ? (
+                        <Button className="submit-btn" type="submit" disabled={sending}>
+                            {sending ? (
                                 <Loader2 className="aspect-square h-full animate-spin" />
                             ) : (
                                 "Submit"

@@ -1,34 +1,21 @@
-// src/components/Admin.jsx
-import { useEffect } from "react";
-import { db } from "../firebase";
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
 import "./Admin.css";
-import SentimentChart from "./SentimentChart";
+import { useState, useEffect } from "react";
+import { db } from "../firebase";
+import { Link } from "react-router-dom";
+import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
 import Feedback from "./Feedback";
 import FeedbackTrend from "./FeedbackTrend";
 
 import Skeleton from "@mui/material/Skeleton";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { ChartPieInteractive } from "@/components/ChartPieInteractive";
 import { ChartLineLinear } from "@/components/ChartLineLinear";
 
-import { ChevronRightIcon, ChevronLeftIcon, MoreHorizontal } from "lucide-react";
+import { MessageSquare,Smile, Meh, Frown, ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
-const Admin = ({ feedback, setfeedback }) => {
-    const [loading, setloading] = useState(true);
+const Admin = ({ feedback, setFeedback }) => {
+    const [loading, setLoading] = useState(true);
     const [dataRange, setDataRange] = useState({ start: 0, end: 5 });
-    const navigate = useNavigate();
     const step = 5;
 
     useEffect(() => {
@@ -40,15 +27,16 @@ const Admin = ({ feedback, setfeedback }) => {
                     id: doc.id,
                     ...doc.data(),
                 }));
-                setfeedback(data);
-                setloading(false);
+                setFeedback(data);
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching feedback:", error);
+                toast.warning("Error fetching feedbacks");
             }
         };
 
         fetchData();
-    }, [setfeedback]);
+    }, [setFeedback]);
 
     const renderSentiment = (sentiment) => {
         if (!sentiment) return "Unknown";
@@ -58,9 +46,9 @@ const Admin = ({ feedback, setfeedback }) => {
         return formatted;
     };
     const total = feedback.length;
-    const positive = feedback.filter((f) => f.sentiment === "positive").length;
-    const neutral = feedback.filter((f) => f.sentiment === "neutral").length;
-    const negative = feedback.filter((f) => f.sentiment === "negative").length;
+    const positive = feedback.filter((f) => f.sentiment.toLowerCase() === "positive").length;
+    const neutral = feedback.filter((f) => f.sentiment.toLowerCase() === "neutral").length;
+    const negative = feedback.filter((f) => f.sentiment.toLowerCase() === "negative").length;
     const sentimentPercentage = {
         positive: ((positive / total) * 100).toFixed(2),
         neutral: ((neutral / total) * 100).toFixed(2),
@@ -96,7 +84,7 @@ const Admin = ({ feedback, setfeedback }) => {
                         <span className="label">Total Feedbacks</span>
                     </div>
                     <span className="icon">
-                        <Icon height="40" width="40" icon="hugeicons:chart-03" />
+                        <MessageSquare size={40} />
                     </span>
                 </div>
 
@@ -113,16 +101,13 @@ const Admin = ({ feedback, setfeedback }) => {
                                     width="100%"
                                     height="100%"
                                     animation="wave"
-                                    // sx={{
-                                    //     bgcolor: "green",
-                                    // }}
                                 />
                             )}
                         </span>
                         <span className="label">Positive Feedbacks</span>
                     </div>
                     <span className="icon">
-                        <Icon height="40" width="40" icon="hugeicons:smile" />
+                        <Smile size={40} />
                     </span>
                 </div>
 
@@ -145,7 +130,7 @@ const Admin = ({ feedback, setfeedback }) => {
                         <span className="label">Neutral Feedbacks</span>
                     </div>
                     <span className="icon">
-                        <Icon height="40" width="40" icon="hugeicons:neutral" />
+                        <Meh size={40} />
                     </span>
                 </div>
 
@@ -168,7 +153,7 @@ const Admin = ({ feedback, setfeedback }) => {
                         <span className="label">Negative Feedbacks</span>
                     </div>
                     <span className="icon">
-                        <Icon height="40" width="40" icon="hugeicons:sad-01" />
+                        <Frown size={40} />
                     </span>
                 </div>
             </div>
@@ -188,7 +173,6 @@ const Admin = ({ feedback, setfeedback }) => {
             <div
                 className={`content-box bento sentiment-chart box flex-col gap-4 ${loading && "still-loading"}`}
             >
-                {/* <SentimentChart feedback={feedback} /> */}
                 <ChartPieInteractive
                     data={myData}
                     valueKey="feedbacks"
@@ -208,20 +192,20 @@ const Admin = ({ feedback, setfeedback }) => {
                 <div className="table__title">
                     <span className="table__title-text flex gap-1.5">
                         <span className="icon">
-                            <Icon height="25" width="25" icon="hugeicons:chart-03" />
+                            <MessageSquare size={25} />
                         </span>
                         Last five feedbacks:
                     </span>
-                    <a href="dashboard/feedback-table" className="table__see-more">
+                    <Link to="feedback" className="table__see-more">
                         See all
-                    </a>
+                    </Link>
                 </div>
                 <table className={`table ${loading && "loading-cells"}`}>
                     <thead>
                         <tr>
                             <th>Course</th>
                             <th>Lecturer</th>
-                            <th className="feedback">Feedback</th>
+                            <th>Feedback</th>
                             <th>Sentiment</th>
                             <th>Date</th>
                         </tr>

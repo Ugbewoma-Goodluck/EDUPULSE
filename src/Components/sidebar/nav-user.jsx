@@ -22,9 +22,9 @@ export function NavUser({ user, handleLogout, signOut }) {
     const { isMobile } = useSidebar();
 
     return (
-        <SidebarMenu>
-            <SidebarMenuItem>
-                <DropdownMenu>
+        <SidebarMenu className="z-1000">
+            <SidebarMenuItem className="z-1000">
+                <DropdownMenu className="z-1000">
                     <DropdownMenuTrigger asChild>
                         <SidebarMenuButton
                             size="lg"
@@ -32,7 +32,7 @@ export function NavUser({ user, handleLogout, signOut }) {
                         >
                             <Avatar className="h-8 w-8 rounded-lg">
                                 <AvatarImage src={user.avatar} alt={user.name} />
-                                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                                <AvatarFallback className="rounded-lg">ED</AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">{user.name}</span>
@@ -51,7 +51,7 @@ export function NavUser({ user, handleLogout, signOut }) {
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                 <Avatar className="h-8 w-8 rounded-lg">
                                     <AvatarImage src={user.avatar} alt={user.name} />
-                                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                                    <AvatarFallback className="rounded-lg">ED</AvatarFallback>
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-medium">{user.name}</span>
@@ -59,28 +59,6 @@ export function NavUser({ user, handleLogout, signOut }) {
                                 </div>
                             </div>
                         </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <Sparkles />
-                                Upgrade to Pro
-                            </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <BadgeCheck />
-                                Account
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <CreditCard />
-                                Billing
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Bell />
-                                Notifications
-                            </DropdownMenuItem>
-                        </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem variant="destructive" onClick={() => handleLogout()}>
                             <LogOut />

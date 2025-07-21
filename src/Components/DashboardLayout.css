@@ -43,18 +43,24 @@
     max-width: 100%;
     /* BENTO styles */
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 3 columns of equal flexible width */
     grid-template-areas:
-        'title        title'
-        'overview  overview'
-        'f-trend    s-chart'
-        'table        table';
-    /* grid-template-rows: repeat(3, auto);  */
+        "title        title"
+        "overview  overview"
+        "table        table";
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 3 columns of equal flexible width */
     grid-auto-rows: auto;
     gap: 15px;
     padding: 10px 20px;
     align-items: stretch; /* stretch all children to full row height */
     position: relative;
+
+    &:has(.sentiment-chart) {
+        grid-template-areas:
+            "title        title"
+            "overview  overview"
+            "f-trend    s-chart"
+            "table        table" !important;
+    }
 }
 .bento {
     max-width: 100%;
@@ -84,7 +90,8 @@
     cursor: pointer;
 }
 
-.sidebar, .sidebar * {
+.sidebar,
+.sidebar * {
     z-index: 1000;
 }
 
@@ -121,16 +128,23 @@
     display: none;
 }
 
-
 @media (max-width: 768px) {
     .content {
         grid-template-columns: 1fr; /* 1 column */
         grid-template-areas:
-            'title'
-            'overview'
-            'f-trend'
-            's-chart'
-            'table';
+            "title"
+            "overview"
+            "s-chart"
+            "table";
+
+        &:has(.sentiment-chart) {
+            grid-template-areas:
+                "title"
+                "overview"
+                "f-trend"
+                "s-chart"
+                "table" !important;
+        }
     }
     .btn-icon {
         display: block;
