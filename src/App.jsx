@@ -12,6 +12,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 
 const App = () => {
+    document.title = "Testing...";
+
     const [feedback, setFeedback] = useState([]);
     return (
         <BrowserRouter>
