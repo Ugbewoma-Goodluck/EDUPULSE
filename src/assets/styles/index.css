@@ -163,6 +163,8 @@
     --destructive-foreground: var(--error-foreground);
     --destructive-background: var(--error-background);
     --destructive-border: var(--error-border);
+
+    --header-height: 50px;
 }
 
 .dark {

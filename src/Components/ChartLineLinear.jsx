@@ -1,5 +1,5 @@
-import { TrendingUp } from 'lucide-react';
-import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
+import { TrendingUp } from "lucide-react";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import {
     CardContent,
@@ -7,31 +7,25 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+} from "@/components/ui/card";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
-export const description = 'A linear line chart';
+export const description = "A linear line chart";
 
 const chartData = [
-    // { month: 'January', feedbacks: 186 },
-    // { month: 'February', feedbacks: 305 },
-    // { month: 'March', feedbacks: 237 },
-    // { month: 'April', feedbacks: 73 },
-    // { month: 'May', feedbacks: 209 },
-    // { month: 'June', feedbacks: 214 },
-    { month: 'Sunday', feedbacks: 3 },
-    { month: 'Monday', feedbacks: 7 },
-    { month: 'Tuesday', feedbacks: 2 },
-    { month: 'Wednesday', feedbacks: 3 },
-    { month: 'Thursday', feedbacks: 0 },
-    { month: 'Friday', feedbacks: 0 },
-    { month: 'Saturday', feedbacks: 0 },
+    { month: "Sunday", feedbacks: 5 },
+    { month: "Monday", feedbacks: 7 },
+    { month: "Tuesday", feedbacks: 2 },
+    { month: "Wednesday", feedbacks: 3 },
+    { month: "Thursday", feedbacks: 0 },
+    { month: "Friday", feedbacks: 0 },
+    { month: "Saturday", feedbacks: 0 },
 ];
 
 const chartConfig = {
     feedbacks: {
-        label: 'Feedbacks',
-        color: 'var(--chart-1)',
+        label: "Feedbacks",
+        color: "var(--chart-1)",
     },
 };
 
@@ -71,7 +65,7 @@ export function ChartLineLinear() {
                     </LineChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="p-0 flex-col items-start gap-2 text-sm">
+            <CardFooter className="flex-col items-start gap-2 p-0 text-sm">
                 <div className="flex gap-2 leading-none font-medium">
                     Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
                 </div>

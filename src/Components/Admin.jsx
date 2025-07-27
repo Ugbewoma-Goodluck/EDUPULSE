@@ -3,14 +3,12 @@ import { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { Link } from "react-router-dom";
 import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
-import Feedback from "./Feedback";
-import FeedbackTrend from "./FeedbackTrend";
 
 import Skeleton from "@mui/material/Skeleton";
 import { ChartPieInteractive } from "@/components/ChartPieInteractive";
 import { ChartLineLinear } from "@/components/ChartLineLinear";
 
-import { MessageSquare,Smile, Meh, Frown, ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
+import { MessageSquare, Smile, Meh, Frown, ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Admin = ({ feedback, setFeedback }) => {
@@ -160,7 +158,6 @@ const Admin = ({ feedback, setFeedback }) => {
             <div
                 className={`content-box bento feedback-trend box flex-col gap-4 ${loading && "still-loading"}`}
             >
-                {/* <FeedbackTrend feedback={feedback} /> */}
                 <ChartLineLinear />
                 {loading && (
                     <Skeleton

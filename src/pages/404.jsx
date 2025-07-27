@@ -4,29 +4,19 @@ import { Link } from "react-router-dom";
 
 export default function NotFound404() {
     return (
-        <div style={styles.container}>
-            <h1 style={styles.code}>404</h1>
-            <p style={styles.message}>Oops—this page doesn’t exist.</p>
-            <Link to="/" style={styles.link}>
+        <main className="flex h-[100vh] flex-col items-center justify-center text-center">
+            <span className="text-muted-foreground m-0 text-[96px]">404</span>
+            <p className="text-oreground m-[0.5rem_0_1.5rem] text-[1.5rem]">
+                Oops—this page doesn’t exist.
+            </p>
+            <Link to="/" className="text-[1rem] text-[#2563eb] no-underline">
                 ← Go back home
             </Link>
-        </div>
+        </main>
     );
 }
 
 const styles = {
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "80vh",
-        textAlign: "center",
-    },
-    code: {
-        fontSize: "6rem",
-        margin: 0,
-    },
     message: {
         fontSize: "1.5rem",
         margin: "0.5rem 0 1.5rem",
