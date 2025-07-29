@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from "react";
 import logo from "../assets/ChatGPT Image Jul 10, 2025, 05_16_19 AM.png";
 import "./landing.css";
-import { NavLink, useNavigate } from "react-router-dom";
-import {
-    ChevronDown,
-    Star,
-    Users,
-    Brain,
-    MessageSquare,
-    ArrowRight,
-    Menu,
-    X,
-    CheckCircle,
-} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
+import { Star, Users, Brain, MessageSquare, Menu, X } from "lucide-react";
 
 const LandingPage = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -75,25 +66,31 @@ const LandingPage = () => {
                         }
                     >
                         <li>
-                            <NavLink
+                            <HashLink
+                                smooth
                                 className="text-[inherit] hover:text-[#1976d2]"
-                                href="#features"
+                                to="#features"
                             >
                                 Features
-                            </NavLink>
+                            </HashLink>
                         </li>
                         <li>
-                            <NavLink className="text-[inherit] hover:text-[#1976d2]" href="#about">
-                                About
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                            <HashLink
+                                smooth
                                 className="text-[inherit] hover:text-[#1976d2]"
-                                href="#contact"
+                                to="#about"
+                            >
+                                About
+                            </HashLink>
+                        </li>
+                        <li>
+                            <HashLink
+                                smooth
+                                className="text-[inherit] hover:text-[#1976d2]"
+                                to="#contact"
                             >
                                 Contact
-                            </NavLink>
+                            </HashLink>
                         </li>
                     </ul>
 
@@ -117,13 +114,19 @@ const LandingPage = () => {
                     >
                         <ul>
                             <li>
-                                <a href="#features">Features</a>
+                                <HashLink smooth to="#features">
+                                    Features
+                                </HashLink>
                             </li>
                             <li>
-                                <a href="#about">About</a>
+                                <HashLink smooth to="#about">
+                                    About
+                                </HashLink>
                             </li>
                             <li>
-                                <a href="#contact">Contact</a>
+                                <HashLink smooth to="#contact">
+                                    Contact
+                                </HashLink>
                             </li>
                         </ul>
                         <a onClick={handlebtn} className="btn-primary">
@@ -192,7 +195,7 @@ const LandingPage = () => {
             </section>
 
             {/* Stats Section */}
-            <section className="stats">
+            <section className="stats" id="about">
                 <div className="stats-container">
                     {stats.map((stat, index) => (
                         <div key={index} className="stat-item fade-in">
@@ -220,7 +223,7 @@ const LandingPage = () => {
             </section>
 
             {/* Footer */}
-            <footer className="footer-landing">
+            <footer className="footer-landing" id="contact">
                 <div className="footer-container">
                     <div className="footer-section">
                         <h3>EDUPULSE</h3>
