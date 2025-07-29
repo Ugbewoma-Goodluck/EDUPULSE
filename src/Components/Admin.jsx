@@ -223,7 +223,7 @@ const Admin = ({ feedback, setFeedback }) => {
                               ))
                             : feedback.slice(dataRange.start, dataRange.end).map((k) => {
                                   return (
-                                      <tr key={k.id} className="feedback-item">
+                                      <tr key={k.id}>
                                           <td data-label="Course Code:">{k.C_code}</td>
                                           <td data-label="Lecturer's name:">{k.lname}</td>
                                           <td className="feedback" data-label="Feedback:">
