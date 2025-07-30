@@ -1,16 +1,6 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
-import {
-    BookOpen,
-    Bot,
-    MessageSquare,
-    Palette,
-    PieChart,
-    ChartArea,
-    Settings2,
-    SquareTerminal,
-    LayoutDashboard,
-} from "lucide-react";
+import { useLocation, NavLink } from "react-router-dom";
+import { MessageSquare, Palette, PieChart, LayoutDashboard } from "lucide-react";
 
 import { NavData } from "@/components/sidebar/nav-data";
 import { NavUser } from "@/components/sidebar/nav-user";
@@ -18,8 +8,6 @@ import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
-    SidebarHeader,
-    SidebarRail,
     SidebarGroup,
     SidebarGroupLabel,
     SidebarGroupContent,
@@ -54,6 +42,9 @@ const data = {
 
 export function DashboardSidebar({ signOut, handleLogout, ...rest }) {
     const { isMobile } = useSidebar();
+    const { pathname } = useLocation();
+
+    const isDashboardActive = pathname === "/dashboard";
 
     return (
         <Sidebar {...rest}>
@@ -62,11 +53,17 @@ export function DashboardSidebar({ signOut, handleLogout, ...rest }) {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild>
-                                    <Link to="/dashboard">
-                                        <LayoutDashboard style={{ fill: "currentColor" }} />
+                                <SidebarMenuButton asChild isActive={isDashboardActive}>
+                                    <NavLink to="/dashboard" end>
+                                        <LayoutDashboard
+                                            style={{
+                                                fill: isDashboardActive
+                                                    ? "currentColor"
+                                                    : undefined,
+                                            }}
+                                        />
                                         <span>Dashboard</span>
-                                    </Link>
+                                    </NavLink>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>

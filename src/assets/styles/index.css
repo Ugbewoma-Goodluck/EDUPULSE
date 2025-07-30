@@ -165,6 +165,7 @@
     --destructive-border: var(--error-border);
 
     --header-height: 50px;
+    interpolate-size: allow-keywords;
 }
 
 .dark {
