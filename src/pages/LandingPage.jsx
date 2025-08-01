@@ -14,9 +14,9 @@ import heroImageDark from "@/assets/images/hero-dashboard-peek-dark.png";
 import { useTheme } from "@/hooks/useTheme";
 
 const LandingPage = () => {
-    const theme = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeFeature, setActiveFeature] = useState(0);
+    const navigate = useNavigate();
 
     const features = [
         {
@@ -33,6 +33,11 @@ const LandingPage = () => {
             icon: <Users className="h-8 w-8" />,
             title: "Lecturer Dashboard",
             description: "Comprehensive insights and analytics for continuous improvement",
+        },
+        {
+            icon: <Brain className="h-8 w-8" />,
+            title: "AI Sentiment Analysis",
+            description: "Advanced AI analyzes emotions and sentiments in student responses",
         },
     ];
 
@@ -53,14 +58,25 @@ const LandingPage = () => {
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
-    const navigate = useNavigate();
+
     const handleBtn = () => {
         navigate("/feedback-form");
     };
 
+    const featureMouseMove = (e) => {
+        for (const box of document.querySelectorAll(".feature-card")) {
+            const rect = box.getBoundingClientRect(),
+                x = e.clientX - rect.left,
+                y = e.clientY - rect.top;
+
+            box.style.setProperty("--feat-mouse-x", `${x}px`);
+            box.style.setProperty("--feat-mouse-y", `${y}px`);
+        }
+    };
+
     return (
         <div className="landing-page">
-            <header className="fixed top-2.5 left-1/2 z-1000 flex h-max w-9/10 -translate-x-1/2 transform flex-col items-center justify-center overflow-hidden rounded-[30px] border-1 border-solid border-(--border) bg-[rgba(250_250_250_/_0.75)] backdrop-blur-md">
+            <header className="fixed top-2.5 left-1/2 z-1000 flex h-max w-9/10 -translate-x-1/2 transform flex-col items-center justify-center overflow-hidden rounded-[30px] border-1 border-solid border-(--border) bg-[rgba(250_250_250_/_0.75)] backdrop-blur-xl">
                 <nav className="flex h-(--header-height) w-full items-center justify-between overflow-hidden p-[7.5px]">
                     <span className="flex h-full items-center gap-1">
                         <img src={logo} alt="Logo" className="aspect-square h-full rounded-full" />
@@ -151,8 +167,8 @@ const LandingPage = () => {
                 </div>
             </header>
 
-            <section className="hero overflow-hidden">
-                <div className="hero-content fade-in">
+            <section className="hero overflow-hidden bg-inherit">
+                <div className="hero-content fade-in bg-inherit">
                     <h1>
                         <span className="inline-flex flex-col text-black">
                             Transform{" "}
@@ -178,19 +194,19 @@ const LandingPage = () => {
                     </p>
                 </div>
 
-                <div className="hero-images fade-in relative flex w-full items-center justify-center overflow-visible">
+                <div className="fade-in relative flex w-full items-center justify-center overflow-visible bg-inherit">
                     <img
                         src={heroImageLight2}
                         alt=""
                         className="aspect-4/1 max-w-[1000px] opacity-0 sm:aspect-2/1"
                     />
-                    <div className="absolute top-0 right-0 z-1 w-full max-w-[1000px] overflow-hidden rounded-[10px] mask-[linear-gradient(#000_70%,_transparent_100%)] transition-all duration-300 hover:z-3 md:-left-4">
+                    <div className="hero-img-cnt top-0 z-1 md:-left-4">
                         <img
                             src={heroImageLight1}
                             className="transition-all duration-350 hover:blur-none lg:blur-[1px]"
                         />
                     </div>
-                    <div className="absolute -right-20 -bottom-12 z-1 w-full max-w-[1000px] overflow-hidden rounded-[10px] mask-[linear-gradient(#000_70%,_transparent_100%)] drop-shadow-[0_0_2em_#61dafbaa] transition-all duration-300 hover:z-3 md:-right-4 md:-bottom-32">
+                    <div className="hero-img-cnt -right-20 -bottom-12 z-10 drop-shadow-[0_0_4em_#61dafbaa] md:-right-4 md:-bottom-32">
                         <img
                             src={heroImageLight2}
                             className="transition-all duration-350 hover:blur-none lg:blur-[1px]"
@@ -207,12 +223,21 @@ const LandingPage = () => {
                         educational outcomes
                     </p>
 
-                    <div className="features-grid">
+                    <div
+                        className="features-grid grid grid-cols-1 gap-2 px-2 py-8 sm:grid-cols-2 lg:grid-cols-2 lg:px-8"
+                        onMouseMove={featureMouseMove}
+                    >
                         {features.map((feature, index) => (
-                            <div key={index} className="feature-card fade-in">
-                                <div className="feature-icon">{feature.icon}</div>
-                                <h3>{feature.title}</h3>
-                                <p>{feature.description}</p>
+                            <div
+                                key={index}
+                                className="feature-card fade-in relative overflow-clip rounded-[10px] bg-[#fafafa] p-0.5 transition-all duration-300"
+                            >
+                                <div className={`feature-border absolute inset-0 z-1`}></div>
+                                <div className="relative z-2 w-full rounded-[8px] bg-[#fafafa] p-8 text-center">
+                                    <div className="feature-icon">{feature.icon}</div>
+                                    <h3>{feature.title}</h3>
+                                    <p>{feature.description}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -237,7 +262,7 @@ const LandingPage = () => {
                                         <>
                                             <ScrollOdometerLib
                                                 value={numericValue}
-                                                duration={1000}
+                                                duration={900}
                                                 format="(,ddd)" /* or whatever format you like */
                                             />
                                             {suffix}
@@ -290,10 +315,14 @@ const LandingPage = () => {
                         <h3>Company</h3>
                         <ul>
                             <li>
-                                <a href="#about">About</a>
+                                <HashLink smooth to="#about">
+                                    About
+                                </HashLink>
                             </li>
                             <li>
-                                <a href="#features">Features</a>
+                                <HashLink smooth to="#features">
+                                    Features
+                                </HashLink>
                             </li>
                         </ul>
                     </div>

@@ -14,6 +14,7 @@ export default function OdometerLib({ value, duration = 2000, format = "(,ddd)" 
             value={count}
             format={format}
             duration={duration}
+            theme="default"
             // you can also pass `theme="car"` or `"default"`, etc.
         />
     );

@@ -22,7 +22,7 @@ export default function ScrollOdometerLib({ value }) {
     return (
         <div ref={ref}>
             {/* Only update the odometer once visible */}
-            {visible && <OdometerLib value={value} duration={1500} />}
+            {visible && <OdometerLib value={value} duration={800} />}
         </div>
     );
 }
