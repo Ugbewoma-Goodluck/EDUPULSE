@@ -7,11 +7,13 @@ import Admin from "@/components/Admin.jsx";
 import Feedback from "@/components/Feedback.jsx";
 import Charts from "@/components/Charts.jsx";
 import { useState } from "react";
-import DashboardLayout from "./components/DashboardLayout.jsx";
+import DashboardLayout from "@/components/DashboardLayout.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 
 const App = () => {
+    document.title = "Testing...";
+
     const [feedback, setFeedback] = useState([]);
     return (
         <BrowserRouter>
